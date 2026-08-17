@@ -1,0 +1,20 @@
+app:
+  name: ExampleApp
+
+provider:
+  kind: gemini
+  model: gemini-3.1-pro-preview
+  api_key_env: GEMINI_API_KEY
+  web_search:
+    enabled: true
+
+loader:
+  kind: langchain
+  class_path: langchain_community.document_loaders.WebBaseLoader
+  kwargs:
+    web_paths:
+      - https://example.com/public-documentation
+    raise_for_status: true
+
+output:
+  run_dir: runs/gemini_web

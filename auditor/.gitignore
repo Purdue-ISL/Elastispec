@@ -1,0 +1,14 @@
+# Local runtime state
+output/
+.venv/
+
+# Secrets
+.env
+*.env
+*api_key*
+*secret*
+
+# Caches
+__pycache__/
+*.pyc
+.DS_Store

@@ -1,0 +1,271 @@
+def PortsUsedbySensors_CloudHTTPv2andCloudPingv2Spec as
+    ((PRTG_Probe_Core_Server, *) -> (PRTG_Cloud, 443) on tcp)
+
+def PortsUsedbySensors_CloudPingv2Spec as
+    ((PRTG_Probe_Core_Server, *) -> (PRTG_Cloud, 80) on tcp)
+
+def PortsUsedbySensors_DellEMCSpec as
+    ((PRTG_Probe_Core_Server, *) -> (Dell_EMC_system, 443) on tcp)
+
+def PortsUsedbySensors_DICOMSpec as
+    ((PRTG_Probe_Core_Server, *) -> (DICOM_enabled_device_or_system, 104) on tcp)
+
+def PortsUsedbySensors_DNSv2Spec as
+    ((PRTG_Probe_Core_Server, *) -> (DNS_server, 53) on tcp, udp)
+
+def PortsUsedbySensors_DockerContainerStatusSpec as
+    ((PRTG_Probe_Core_Server, *) -> (Docker_container, 2376) on tcp)
+
+def PortsUsedbySensors_FortiGateSpec as
+    ((PRTG_Probe_Core_Server, *) -> (FortiGate_system, 443) on tcp)
+
+def PortsUsedbySensors_FTPSpec as
+    ((PRTG_Probe_Core_Server, *) -> (FTP_server, 21) on tcp)
+
+def PortsUsedbySensors_HL7Spec as
+    ((PRTG_Probe_Core_Server, *) -> (HL7_interface, 104) on tcp)
+
+def PortsUsedbySensors_HPE3PARSpec as
+    (((PRTG_Probe_Core_Server, *) -> (HPE3PAR_interface, 8080) on tcp) OR
+    ((PRTG_Probe_Core_Server, *) -> (HPE3PAR_interface, 8008) on tcp)) AND
+    ((PRTG_Probe_Core_Server, *) -> (HPE3PAR_interface, 22) on tcp)
+
+def PortsUsedbySensors_HTTPSpec as
+    ((PRTG_Probe_Core_Server, *) -> (Proxy_server, 8080) on tcp)
+
+def PortsUsedbySensors_HTTPIoTPushDataAdvancedSpec as
+    ((Push_capable_IoT_device, *) -> (PRTG_Probe_Core_Server, 5051) on tcp)
+
+def PortsUsedbySensors_HTTPPushSpec as
+    ((Push_capable_device_or_system, *) -> (PRTG_Probe_Core_Server, 5051) on tcp) OR
+    ((Push_capable_device_or_system, *) -> (PRTG_Probe_Core_Server, 5050) on tcp)
+
+def PortsUsedbySensors_IMAPSpec as
+    ((PRTG_Probe_Core_Server, *) -> (IMAP_server, 993) on tcp) OR
+    ((PRTG_Probe_Core_Server, *) -> (IMAP_server, 143) on tcp)
+
+def PortsUsedbySensors_LDAPSpec as
+    ((PRTG_Probe_Core_Server, *) -> (LDAP_server, 636) on tcp) OR
+    ((PRTG_Probe_Core_Server, *) -> (LDAP_server, 389) on tcp)
+
+def PortsUsedbySensors_NetAppSpec as
+    ((PRTG_Probe_Core_Server, *) -> (NetApp_system, 443) on tcp)
+
+def PortsUsedbySensors_MicrosoftSQLv2Spec as
+    ((PRTG_Probe_Core_Server, *) -> (Microsoft_SQL_database_server, 1433) on tcp)
+
+def PortsUsedbySensors_MySQLv2Spec as
+    ((PRTG_Probe_Core_Server, *) -> (MySQL_database_server, 3306) on tcp)
+
+def PortsUsedbySensors_ModbusTCPCustomSpec as
+    ((PRTG_Probe_Core_Server, *) -> (Modbus_TCP_server, 502) on tcp)
+
+def PortsUsedbySensors_MQTTSpec as
+    ((PRTG_Probe_Core_Server, *) -> (MQTT_server, 8883) on tcp) OR
+    ((PRTG_Probe_Core_Server, *) -> (MQTT_server, 1883) on tcp)
+
+def PortsUsedbySensors_OPCUASpec as
+    ((PRTG_Probe_Core_Server, *) -> (OPC_UA_server, 4840) on tcp)
+
+def PortsUsedbySensors_OracleSpec as
+    ((PRTG_Probe_Core_Server, *) -> (Oracle_SQL_database_server, 1521) on tcp)
+
+def PortsUsedbySensors_POP3Spec as
+    ((PRTG_Probe_Core_Server, *) -> (POP3_server, 995) on tcp) OR
+    ((PRTG_Probe_Core_Server, *) -> (POP3_server, 110) on tcp)
+
+def PortsUsedbySensors_Portv2Spec as
+    ((PRTG_Probe_Core_Server, *) -> (Monitored_device_or_system, 443) on tcp)
+
+def PortsUsedbySensors_PostgreSQLSpec as
+    ((PRTG_Probe_Core_Server, *) -> (PostgreSQL_database_server, 5432) on tcp)
+
+def PortsUsedbySensors_QoSSpec as
+    ((QoS_monitoring_capable_device, *) -> (PRTG_Probe_Core_Server, 50000) on udp)
+
+def PortsUsedbySensors_RADIUSv2Spec as
+    ((PRTG_Probe_Core_Server, *) -> (RADIUS_server, 1812) on udp)
+
+def PortsUsedbySensors_RDPRemoteDesktopSpec as
+    ((PRTG_Probe_Core_Server, *) -> (RDP_enabled_device_or_system, 3389) on tcp)
+
+def PortsUsedbySensors_RedfishSpec as
+    ((PRTG_Probe_Core_Server, *) -> (Redfish_enabled_device_or_system, 443) on tcp)
+
+def PortsUsedbySensors_RESTSpec as
+    ((PRTG_Probe_Core_Server, *) -> (Proxy_server, 8080) on tcp)
+
+def PortsUsedbySensors_SIPOptionsPingSpec as
+    ((PRTG_Probe_Core_Server, *) -> (SIP_enabled_device_or_system, 5060) on udp)
+
+def PortsUsedbySensors_SMTPSpec as
+    ((PRTG_Probe_Core_Server, *) -> (SMTP_server, 465) on tcp) OR
+    ((PRTG_Probe_Core_Server, *) -> (SMTP_server, 587) on tcp) OR
+    ((PRTG_Probe_Core_Server, *) -> (SMTP_server, 25) on tcp)
+
+def PortsUsedbySensors_SMTP_IMAPRoundTripSpec as
+    ((PRTG_Probe_Core_Server, *) -> (SMTP_server, 993) on tcp) OR
+    ((PRTG_Probe_Core_Server, *) -> (SMTP_server, 143) on tcp)
+
+def PortsUsedbySensors_SMTP_POP3RoundTripSpec as
+    ((PRTG_Probe_Core_Server, *) -> (SMTP_server, 995) on tcp) OR
+    ((PRTG_Probe_Core_Server, *) -> (SMTP_server, 110) on tcp)
+
+def PortsUsedbySensors_SNMPSpec as
+    ((PRTG_Probe_Core_Server, *) -> (SNMP_enabled_device, 161) on udp)
+
+def PortsUsedbySensors_SNMPTrapReceiverSpec as
+    ((SNMP_enabled_device, *) -> (PRTG_Probe_Core_Server, 162) on udp)
+
+def PortsUsedbySensors_SofficoOrchestraChannelHealthSpec as
+    ((PRTG_Probe_Core_Server, *) -> (Soffico_Orchestra_Platform, 8443) on tcp) OR
+    ((PRTG_Probe_Core_Server, *) -> (Soffico_Orchestra_Platform, 8019) on tcp)
+
+def PortsUsedbySensors_SSHSpec as
+    ((PRTG_Probe_Core_Server, *) -> (SSH_enabled_device_or_system, 22) on tcp)
+
+def PortsUsedbySensors_SSLSpec as
+    ((PRTG_Probe_Core_Server, *) -> (SSL_TLS_enabled_device_or_system, 443) on tcp)
+
+def PortsUsedbySensors_SyslogReceiverSpec as
+    ((Syslog_sending_device_or_system, *) -> (PRTG_Probe_Core_Server, 514) on udp)
+
+def PortsUsedbySensors_TFTPSpec as
+    ((PRTG_Probe_Core_Server, *) -> (TFTP_enabled_device_or_system, 69) on udp)
+
+def PortsUsedbySensors_VeeamBackupJobStatusSpec as
+    ((PRTG_Probe_Core_Server, *) -> (Veeam_Backup_Enterprise_Manager, 9398) on tcp)
+
+def PortsUsedbySensors_VMwareSOAPSpec as
+    ((PRTG_Probe_Core_Server, *) -> (VMware_system, 443) on tcp)
+
+def PortsUsedbySensors_WBEMSpec as
+    ((PRTG_Probe_Core_Server, *) -> (WBEM_enabled_device_or_system, 5988) on tcp) OR
+    ((PRTG_Probe_Core_Server, *) -> (WBEM_enabled_device_or_system, 5989) on tcp)
+
+def PortsUsedbySensors_WindowsUpdatesStatusPowerShellSpec as
+    ((PRTG_Probe_Core_Server, *) -> (Microsoft_Update_Server, 5985) on tcp) OR
+    ((PRTG_Probe_Core_Server, *) -> (WSUS_Server, 5985) on tcp)
+
+def PortsUsedbySensors_WMISpec as
+    ((PRTG_Probe_Core_Server, *) -> (WMI_enabled_device_or_system, 135) on tcp)
+
+def PortsUsedbySensors_WSUSStatisticsSpec as
+    ((PRTG_Probe_Core_Server, *) -> (WSUS_Server, 8530) on tcp)
+
+def PortsUsedbySensorsSpec as
+    PortsUsedbySensors_CloudHTTPv2andCloudPingv2Spec OR
+    PortsUsedbySensors_CloudPingv2Spec OR
+    PortsUsedbySensors_DellEMCSpec OR
+    PortsUsedbySensors_DICOMSpec OR
+    PortsUsedbySensors_DNSv2Spec OR
+    PortsUsedbySensors_DockerContainerStatusSpec OR
+    PortsUsedbySensors_FortiGateSpec OR
+    PortsUsedbySensors_FTPSpec OR
+    PortsUsedbySensors_HL7Spec OR
+    PortsUsedbySensors_HPE3PARSpec OR
+    PortsUsedbySensors_HTTPSpec OR
+    PortsUsedbySensors_HTTPIoTPushDataAdvancedSpec OR
+    PortsUsedbySensors_HTTPPushSpec OR
+    PortsUsedbySensors_IMAPSpec OR
+    PortsUsedbySensors_LDAPSpec OR
+    PortsUsedbySensors_NetAppSpec OR
+    PortsUsedbySensors_MicrosoftSQLv2Spec OR
+    PortsUsedbySensors_MySQLv2Spec OR
+    PortsUsedbySensors_ModbusTCPCustomSpec OR
+    PortsUsedbySensors_MQTTSpec OR
+    PortsUsedbySensors_OPCUASpec OR
+    PortsUsedbySensors_OracleSpec OR
+    PortsUsedbySensors_POP3Spec OR
+    PortsUsedbySensors_Portv2Spec OR
+    PortsUsedbySensors_PostgreSQLSpec OR
+    PortsUsedbySensors_QoSSpec OR
+    PortsUsedbySensors_RADIUSv2Spec OR
+    PortsUsedbySensors_RDPRemoteDesktopSpec OR
+    PortsUsedbySensors_RedfishSpec OR
+    PortsUsedbySensors_RESTSpec OR
+    PortsUsedbySensors_SIPOptionsPingSpec OR
+    PortsUsedbySensors_SMTPSpec OR
+    PortsUsedbySensors_SMTP_IMAPRoundTripSpec OR
+    PortsUsedbySensors_SMTP_POP3RoundTripSpec OR
+    PortsUsedbySensors_SNMPSpec OR
+    PortsUsedbySensors_SNMPTrapReceiverSpec OR
+    PortsUsedbySensors_SofficoOrchestraChannelHealthSpec OR
+    PortsUsedbySensors_SSHSpec OR
+    PortsUsedbySensors_SSLSpec OR
+    PortsUsedbySensors_SyslogReceiverSpec OR
+    PortsUsedbySensors_TFTPSpec OR
+    PortsUsedbySensors_VeeamBackupJobStatusSpec OR
+    PortsUsedbySensors_VMwareSOAPSpec OR
+    PortsUsedbySensors_WBEMSpec OR
+    PortsUsedbySensors_WindowsUpdatesStatusPowerShellSpec OR
+    PortsUsedbySensors_WMISpec OR
+    PortsUsedbySensors_WSUSStatisticsSpec
+
+def PortsUsedinOtherContexts_ActiveDirectoryintegrationSpec as
+    ((PRTG_Core_Server, *) -> (Active_Directory_Domain_Controller, 389) on tcp) OR
+    ((PRTG_Core_Server, *) -> (Active_Directory_Domain_Controller, 636) on tcp)
+
+def PortsUsedinOtherContexts_Auto_updateandactivationSpec as
+    ((PRTG_Core_Server, *) -> (Paessler_Update_and_Activation_Server, 443) on tcp)
+
+def PortsUsedinOtherContexts_ClustercommunicationSpec as
+    ((PRTG_Core_Server_Cluster_Node, *) -> (PRTG_Core_Server_Cluster_Node, 23570) on tcp)
+
+def PortsUsedinOtherContexts_IncomingprobeconnectionsSpec as
+    ((PRTG_Remote_Probe, *) -> (PRTG_Core_Server, 23560) on tcp)
+
+def PortsUsedinOtherContexts_Multi_platformprobeandPRTGcoreserverSpec as
+    ((PRTG_Multi_platform_Probe, *) -> (PRTG_Core_Server, 23562) on tcp)
+
+def PortsUsedinOtherContexts_NotificationsSpec as
+    ((PRTG_Core_Server, *) -> (PRTG_Cloud_Push_Notification_Service, 443) on tcp) OR
+    ((PRTG_Core_Server, *) -> (SMTP_server, 25) on tcp) OR
+    ((PRTG_Core_Server, *) -> (SNMP_Trap_Receiver_System, 162) on udp) OR
+    ((PRTG_Core_Server, *) -> (Syslog_Server, 514) on udp)
+
+def PortsUsedinOtherContexts_PRTGapplicationserverandPRTGcoreserverSpec as
+    ((PRTG_Application_Server, *) -> (PRTG_Core_Server, 23580) on tcp)
+
+def PortsUsedinOtherContexts_PRTGCloudSpec as
+    ((PRTG_Core_Server, *) -> (PRTG_Cloud, 443) on tcp)
+
+def PortsUsedinOtherContexts_PRTGMultiBoardFileTransferSpec as
+    ((PRTG_Core_Server, *) -> (PRTG_Core_Server, 44387) on tcp)
+
+def PortsUsedinOtherContexts_PRTGwebserverSpec as
+    (((User_Workstation, *) -> (PRTG_Web_Server, 443, 8443) on tcp) OR
+    ((User_Workstation, *) -> (PRTG_Web_Server, 80, 8080) on tcp)) OR
+    (((PRTG_Desktop_App, *) -> (PRTG_Web_Server, 443, 8443) on tcp) OR
+    ((PRTG_Desktop_App, *) -> (PRTG_Web_Server, 80, 8080) on tcp)) OR
+    (((PRTG_MultiBoard_App, *) -> (PRTG_Web_Server, 443, 8443) on tcp) OR
+    ((PRTG_MultiBoard_App, *) -> (PRTG_Web_Server, 80, 8080) on tcp)) OR
+    (((PRTG_Mobile_App, *) -> (PRTG_Web_Server, 443, 8443) on tcp) OR
+    ((PRTG_Mobile_App, *) -> (PRTG_Web_Server, 80, 8080) on tcp))
+
+def PortsUsedinOtherContexts_RemoteprobesandPRTGcoreserverSpec as
+    ((PRTG_Remote_Probe, *) -> (PRTG_Core_Server, 23560) on tcp)
+
+def PortsUsedinOtherContexts_ReportgenerationSpec as
+    ((PRTG_Core_Server, *) -> (PRTG_Report_Generation_Service, 8085) on tcp)
+
+def PortsUsedinOtherContexts_UpdatecheckanddownloadSpec as
+    ((PRTG_Core_Server, *) -> (Paessler_Update_and_Activation_Server, 80) on tcp)
+
+def PortsUsedinOtherContextsSpec as
+    PortsUsedinOtherContexts_ActiveDirectoryintegrationSpec? AND
+    PortsUsedinOtherContexts_Auto_updateandactivationSpec? AND
+    PortsUsedinOtherContexts_ClustercommunicationSpec? AND
+    PortsUsedinOtherContexts_IncomingprobeconnectionsSpec? AND
+    PortsUsedinOtherContexts_Multi_platformprobeandPRTGcoreserverSpec? AND
+    PortsUsedinOtherContexts_NotificationsSpec? AND
+    PortsUsedinOtherContexts_PRTGapplicationserverandPRTGcoreserverSpec AND
+    PortsUsedinOtherContexts_PRTGCloudSpec? AND
+    PortsUsedinOtherContexts_PRTGMultiBoardFileTransferSpec? AND
+    PortsUsedinOtherContexts_PRTGwebserverSpec AND
+    PortsUsedinOtherContexts_RemoteprobesandPRTGcoreserverSpec? AND
+    PortsUsedinOtherContexts_ReportgenerationSpec? AND
+    PortsUsedinOtherContexts_UpdatecheckanddownloadSpec?
+
+def PRTGFirewallSpec as
+    PortsUsedbySensorsSpec AND PortsUsedinOtherContextsSpec

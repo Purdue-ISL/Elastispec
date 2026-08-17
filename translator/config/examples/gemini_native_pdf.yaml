@@ -1,0 +1,17 @@
+app:
+  name: ExampleApp
+
+provider:
+  kind: gemini
+  model: gemini-3.1-pro-preview
+  api_key_env: GEMINI_API_KEY
+  web_search:
+    enabled: false
+
+loader:
+  kind: gemini_native_pdf
+  local_paths:
+    - /absolute/path/to/user-owned-document.pdf
+
+output:
+  run_dir: runs/gemini_native_pdf

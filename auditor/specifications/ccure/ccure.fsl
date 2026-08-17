@@ -1,0 +1,1031 @@
+def C_CURE9000ServervictorApplicationServervAS_IISforHTTPSpec as
+    ((Client, *) -> (IIS_for_HTTP, 80) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_IISforHTTPSSpec as
+    ((Client, *) -> (IIS_for_HTTPS, 443) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_HostportforiSTARdriverSpec as
+    ((ISTAR, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 2800) on udp, tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_iSTARFastpersonneldownloadhostportSpec as
+    ((ISTAR, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 2801) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_FastimagedownloadhostportiSTARProonlySpec as
+    ((iSTAR_Pro, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 2802) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_FastSQLitepersonaldatabasedownloadSpec as
+    ((iSTAR_Ultra, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 2804) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_PaneluploadspersonneldatabasefiletohostSpec as
+    ((iSTAR_Ultra, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 2816) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_HTTPforC_CUREWebSpec as
+    ((C_CURE_web, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 3000) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_HTTPsforC_CUREWebSpec as
+    ((C_CURE_web, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 3001) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_HTTPforC_CUREWebDBSpec as
+    ((C_CURE_Web_couch_DB, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 5984) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_EMCReplistorSpec as
+    ((EMC_Replistor, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 7144-7145) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_EMCAutoStartSpec as
+    ((EMC_AutoStart, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 8042-8045) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_Tomcat6_exeSpec as
+    ((Assa_Abloy_DSR, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 8080) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_AutoUpdateSpec as
+    ((Client, *) -> (Master_Application_Server_MAS, 8085) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_BaseaddressofdriverserviceSpec as
+    ((Driver_Controlled_Endpoints, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 8985) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_Installation_upgradeandrepairoperationsonMASandSASSpec as
+    ((Satellite_Application_Server_SAS, *) -> (Master_Application_Server_MAS, 8995) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_CrossfireserviceofwebclientsessionSpec as
+    ((Client, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 8996) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_Admin_MonitorClientstreamSpec as
+    ((Client, *) -> (Crossfire_service, 8997) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_CrossfireserviceofHTTPclientsessionSpec as
+    ((C_CURE_Mobile, *) -> (Crossfire_service, 8998) on tcp) OR
+    ((Web_Service, *) -> (Crossfire_service, 8998) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_CrossfireserviceofTCPclientsessionSpec as
+    ((C_CURE9000_Administration_client_C_CURE9000_Monitoring_Station_client, *) -> (Crossfire_service, 8999) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_CrossFireAssaAbloyDriverServiceSpec as
+    ((Assa_Abloy_DSR, *) -> (CrossFireAssaAbloyDriverService, 9090) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_LightTPD_exeSpec as
+    ((iSTAR_Ultra, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 9701) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_TycoESSLicensesoftwareSpec as
+    ((Client, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 27000) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_TycoESS_LicenseVendorDaemonSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (TycoESS_License_Vendor_Daemon, 27010) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_iSTARDriver_iSTAReX_Edge_UltraFastpersonneldownloadconnectionSpec as
+    ((iSTAR_eX_Edge_Ultra_Panels, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 28001) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_iSTARDriver_iSTAReX_EdgefirmwaredownloadandforTLS1_2hostcertificatedownloadSpec as
+    ((iSTAR_eX_Edge_Ultra_Panels, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 28002) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_iSTARDriver_iSTAReX_Edge_UltraUsedbyhosttoaccepteXorEdgerequestforcertificatesigningSpec as
+    ((iSTAR_eX_Edge_Ultra_Panels, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 28003) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_iSTARDriver_EncryptediSTARUltraSQLLitedatabasedownloadSpec as
+    ((iSTAR_Ultra, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 28004) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_iSTARDriver_HostportforincomingencryptediSTARconnectionsSpec as
+    ((iSTAR, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 28010) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_iSTARDriver_PaneluploadspersonneldatabasefiletohostwhenusingTLS1_2Spec as
+    ((iSTAR_Ultra, *) -> (stunnel_exe, 28016) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_iSTARDriver_PortforConnectionwith_iSTAREdgeG2iSTARUltraG2Spec as
+    ((iSTAR_G2_Panels, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 28110) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_iSTARDriver_Fastdownloadportfor_iSTAREdgeG2iSTARUltraG2Spec as
+    ((iSTAR_G2_Panels, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 28104) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_iSTARDriver_CertificateSignRequestfor_iSTAREdgeG2iSTARUltraG2Spec as
+    ((iSTAR_G2_Panels, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 28013) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_iSTARUltraUploadConnectionG2V6PaneluploadspersonneldatabasefiletohostusingTLS1_3Spec as
+    ((TLS_1_3_Upload_Capable_iSTAR_Panels, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 28116) on tcp)
+
+def C_CURE9000ServervictorApplicationServervAS_StunnelInnometriks_onlySpec as
+    (((Innometriks_High_Assurance_Reader, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 33002) on tcp) AND
+    ((Innometriks_High_Assurance_Reader, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 33003) on tcp) AND
+    ((Innometriks_High_Assurance_Reader, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 33050) on tcp)) OR
+    (((Innometriks_High_Assurance_Reader, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 33102) on tcp) AND
+    ((Innometriks_High_Assurance_Reader, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 33103) on tcp) AND
+    ((Innometriks_High_Assurance_Reader, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 33150) on tcp))
+
+def C_CURE9000ServervictorApplicationServervASSpec as
+    C_CURE9000ServervictorApplicationServervAS_IISforHTTPSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_IISforHTTPSSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_HostportforiSTARdriverSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_iSTARFastpersonneldownloadhostportSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_FastimagedownloadhostportiSTARProonlySpec? AND
+    C_CURE9000ServervictorApplicationServervAS_FastSQLitepersonaldatabasedownloadSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_PaneluploadspersonneldatabasefiletohostSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_HTTPforC_CUREWebSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_HTTPsforC_CUREWebSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_HTTPforC_CUREWebDBSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_EMCReplistorSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_EMCAutoStartSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_Tomcat6_exeSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_AutoUpdateSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_BaseaddressofdriverserviceSpec AND
+    C_CURE9000ServervictorApplicationServervAS_Installation_upgradeandrepairoperationsonMASandSASSpec AND
+    C_CURE9000ServervictorApplicationServervAS_CrossfireserviceofwebclientsessionSpec AND
+    C_CURE9000ServervictorApplicationServervAS_Admin_MonitorClientstreamSpec AND
+    C_CURE9000ServervictorApplicationServervAS_CrossfireserviceofHTTPclientsessionSpec AND
+    C_CURE9000ServervictorApplicationServervAS_CrossfireserviceofTCPclientsessionSpec AND
+    C_CURE9000ServervictorApplicationServervAS_CrossFireAssaAbloyDriverServiceSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_LightTPD_exeSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_TycoESSLicensesoftwareSpec AND
+    C_CURE9000ServervictorApplicationServervAS_TycoESS_LicenseVendorDaemonSpec AND
+    C_CURE9000ServervictorApplicationServervAS_iSTARDriver_iSTAReX_Edge_UltraFastpersonneldownloadconnectionSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_iSTARDriver_iSTAReX_EdgefirmwaredownloadandforTLS1_2hostcertificatedownloadSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_iSTARDriver_iSTAReX_Edge_UltraUsedbyhosttoaccepteXorEdgerequestforcertificatesigningSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_iSTARDriver_EncryptediSTARUltraSQLLitedatabasedownloadSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_iSTARDriver_HostportforincomingencryptediSTARconnectionsSpec? AND
+    C_CURE9000ServervictorApplicationServervAS_iSTARDriver_PaneluploadspersonneldatabasefiletohostwhenusingTLS1_2Spec? AND
+    C_CURE9000ServervictorApplicationServervAS_iSTARDriver_PortforConnectionwith_iSTAREdgeG2iSTARUltraG2Spec? AND
+    C_CURE9000ServervictorApplicationServervAS_iSTARDriver_Fastdownloadportfor_iSTAREdgeG2iSTARUltraG2Spec? AND
+    C_CURE9000ServervictorApplicationServervAS_iSTARDriver_CertificateSignRequestfor_iSTAREdgeG2iSTARUltraG2Spec? AND
+    C_CURE9000ServervictorApplicationServervAS_iSTARUltraUploadConnectionG2V6PaneluploadspersonneldatabasefiletohostusingTLS1_3Spec? AND
+    C_CURE9000ServervictorApplicationServervAS_StunnelInnometriks_onlySpec?
+
+def C_CUREIQ_C_CUREWeb_andC_CUREPortal_HTTPforC_CUREWebSpec as
+    ((Client, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 3000) on tcp)
+
+def C_CUREIQ_C_CUREWeb_andC_CUREPortal_HTTPsforC_CUREWebSpec as
+    ((Client, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 3001) on tcp)
+
+def C_CUREIQ_C_CUREWeb_andC_CUREPortal_HTTPforC_CUREIQSpec as
+    ((Client, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 4000) on tcp)
+
+def C_CUREIQ_C_CUREWeb_andC_CUREPortal_HTTPsforC_CUREIQSpec as
+    ((Client, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 4001) on tcp)
+
+def C_CUREIQ_C_CUREWeb_andC_CUREPortal_HTTPforC_CUREPortalSpec as
+    ((Client, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 4002) on tcp)
+
+def C_CUREIQ_C_CUREWeb_andC_CUREPortal_HTTPsforC_CUREPortalSpec as
+    ((Client, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 4003) on tcp)
+
+def C_CUREIQC_CUREWebandC_CUREPortalSpec as
+    C_CUREIQ_C_CUREWeb_andC_CUREPortal_HTTPforC_CUREWebSpec AND
+    C_CUREIQ_C_CUREWeb_andC_CUREPortal_HTTPsforC_CUREWebSpec AND
+    C_CUREIQ_C_CUREWeb_andC_CUREPortal_HTTPforC_CUREIQSpec AND
+    C_CUREIQ_C_CUREWeb_andC_CUREPortal_HTTPsforC_CUREIQSpec AND
+    C_CUREIQ_C_CUREWeb_andC_CUREPortal_HTTPforC_CUREPortalSpec AND
+    C_CUREIQ_C_CUREWeb_andC_CUREPortal_HTTPsforC_CUREPortalSpec
+
+def iSTAREdge_eX_HTTPSpec as
+    ((Web_Browser_for_Diagnostics, *) -> (iSTAR_Edge_eX_Panels, 80) on tcp)
+
+def iSTAREdge_eX_NetBIOS_NSSpec as
+    ((iSTAR_Edge_eX_Panels, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 137) on udp)
+
+def iSTAREdge_eX_NetBIOS_DSSpec as
+    ((iSTAR_Edge_eX_Panels, *) -> (NetBIOS_Datagram_Service, 138) on udp)
+
+def iSTAREdge_eX_SNMPSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Edge_eX_Panels, 161) on udp)
+
+def iSTAREdge_eX_WindowsDNSSpec as
+    ((iSTAR_Edge_eX_Panels, *) -> (Windows_DNS, 1025) on udp)
+
+def iSTAREdge_eX_ConfigurationSpec as
+    ((ICU, *) -> (iSTAR_Edge_eX_Panels, 1999) on tcp) OR
+    ((iSTAR_Edge_eX_Panels, *) -> (iSTAR_Edge_eX_Panels, 1999) on tcp)
+
+def iSTAREdge_eX_DiscoverySpec as
+    ((ICU, *) -> (iSTAR_Edge_eX_Panels, 2001) on udp)
+
+def iSTAREdge_eX_iWATCHSpec as
+    ((iSTAR_Edge_eX_Panels, *) -> (iWATCH, 2008) on tcp)
+
+def iSTAREdge_eX_encryptionSpec as
+    ((Encrypted_iSTAR_Panels, *) -> (Encryption_Service, 28003) on tcp)
+
+def iSTAREdge_eX_ClustermemberSpec as
+    ((Encrypted_iSTAR_Panels, *) -> (Cluster_member, 28009) on tcp)
+
+def iSTAREdge_eX_iSTARtoC_CUREcommunicationSpec as
+    ((iSTAR_Edge_eX_Panels, *) -> (stunnel_exe, 1025-5000) on tcp)
+
+def iSTAREdge_eXSpec as
+    iSTAREdge_eX_HTTPSpec? AND
+    iSTAREdge_eX_NetBIOS_NSSpec? AND
+    iSTAREdge_eX_NetBIOS_DSSpec? AND
+    iSTAREdge_eX_SNMPSpec? AND
+    iSTAREdge_eX_WindowsDNSSpec? AND
+    iSTAREdge_eX_ConfigurationSpec? AND
+    iSTAREdge_eX_DiscoverySpec? AND
+    iSTAREdge_eX_iWATCHSpec? AND
+    iSTAREdge_eX_encryptionSpec? AND
+    iSTAREdge_eX_ClustermemberSpec? AND
+    iSTAREdge_eX_iSTARtoC_CUREcommunicationSpec?
+
+def iSTARPro_HTTPSpec as
+    ((Web_Browser_for_Diagnostics, *) -> (iSTAR_Pro, 80) on tcp)
+
+def iSTARPro_SNMPSpec as
+    ((iSTAR_Pro, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 161) on udp)
+
+def iSTARPro_WindowsDNSSpec as
+    ((iSTAR_Pro, *) -> (Windows_DNS, 1025) on udp)
+
+def iSTARPro_MasterSpec as
+    ((iSTAR_Pro, *) -> (iSTAR_Pro_Master, 1999) on tcp) OR
+    ((ICU, *) -> (iSTAR_Pro_Master, 1999) on tcp)
+
+def iSTARPro_iWATCHSpec as
+    ((iSTAR_Pro, *) -> (iWATCH, 2008) on tcp)
+
+def iSTARPro_DiscoverySpec as
+    ((ICU, *) -> (iSTAR_Pro, 2001) on udp)
+
+def iSTARPro_iSTARtoC_CUREcommunicationSpec as
+    ((iSTAR_Pro, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 1025-5000) on tcp)
+
+def iSTARProSpec as
+    iSTARPro_HTTPSpec? AND
+    iSTARPro_SNMPSpec? AND
+    iSTARPro_WindowsDNSSpec? AND
+    iSTARPro_MasterSpec? AND
+    iSTARPro_iWATCHSpec? AND
+    iSTARPro_DiscoverySpec? AND
+    iSTARPro_iSTARtoC_CUREcommunicationSpec?
+
+def iSTARUltra_iSTARUltraSE_iSTARUltraLT_SNMPSpec as
+    ((iSTAR_Ultra_Family, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 161) on udp)
+
+def iSTARUltra_iSTARUltraSE_iSTARUltraLT_HTTPSSpec as
+    ((Web_Browser_for_Diagnostics, *) -> (iSTAR_Ultra_Family, 443) on tcp)
+
+def iSTARUltra_iSTARUltraSE_iSTARUltraLT_MasterSpec as
+    ((iSTAR_Ultra_Family, *) -> (iSTAR_Ultra_Master, 1999) on tcp) AND
+    ((ICU, *) -> (iSTAR_Ultra_Master, 1999) on tcp)
+
+def iSTARUltra_iSTARUltraSE_iSTARUltraLT_DiscoverySpec as
+    ((ICU, *) -> (iSTAR_Ultra_Family, 2001) on udp) OR
+    ((Cluster_member, *) -> (iSTAR_Ultra_Master, 2001) on udp)
+
+def iSTARUltra_iSTARUltraSE_iSTARUltraLT_CommunicationSpec as
+    ((IP_ACM, *) -> (iSTAR_Ultra_GCM, 2900) on tcp)
+
+def iSTARUltra_iSTARUltraSE_iSTARUltraLT_iSTARIP_ACMSpec as
+    ((IP_ACM2, *) -> (iSTAR_Ultra_Family_Panels, 2901-2902) on tcp) AND
+    ((IP_ACM2, *) -> (iSTAR_Ultra_Family_Panels, 2910) on udp)
+
+def iSTARUltra_iSTARUltraSE_iSTARUltraLT_iSTARUltrasignedcertificatedownloadportSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_Family, 28004) on tcp)
+
+def iSTARUltra_iSTARUltraSE_iSTARUltraLT_iSTARMemberSpec as
+    ((Encrypted_iSTAR_Panels, *) -> (iSTAR_Ultra_Family, 28009) on tcp)
+
+def iSTARUltra_iSTARUltraSE_iSTARUltraLT_iSTARUltraFirmwaredownloadSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_Family, 21050) on tcp) OR
+    ((C_CURE_web, *) -> (iSTAR_Ultra_Family, 21050) on tcp)
+
+def iSTARUltra_iSTARUltraSE_iSTARUltraLT_iSTARUltrainTLS1_3signedcertificatedownloadportSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_Family, 28014) on tcp)
+
+def iSTARUltra_iSTARUltraSE_iSTARUltraLT_InnometriksSpec as
+    (((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_Family_Panels, 33002) on tcp) AND
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_Family_Panels, 33003) on tcp) AND
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_Family_Panels, 33050) on tcp)) OR
+    (((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_Family_Panels, 33102) on tcp) AND
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_Family_Panels, 33103) on tcp) AND
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_Family_Panels, 33150) on tcp))
+
+def iSTARUltra_iSTARUltraSE_iSTARUltraLTSpec as
+    iSTARUltra_iSTARUltraSE_iSTARUltraLT_SNMPSpec? AND
+    iSTARUltra_iSTARUltraSE_iSTARUltraLT_HTTPSSpec? AND
+    iSTARUltra_iSTARUltraSE_iSTARUltraLT_MasterSpec? AND
+    iSTARUltra_iSTARUltraSE_iSTARUltraLT_DiscoverySpec? AND
+    iSTARUltra_iSTARUltraSE_iSTARUltraLT_CommunicationSpec? AND
+    iSTARUltra_iSTARUltraSE_iSTARUltraLT_iSTARIP_ACMSpec? AND
+    iSTARUltra_iSTARUltraSE_iSTARUltraLT_iSTARUltrasignedcertificatedownloadportSpec? AND
+    iSTARUltra_iSTARUltraSE_iSTARUltraLT_iSTARMemberSpec? AND
+    iSTARUltra_iSTARUltraSE_iSTARUltraLT_iSTARUltraFirmwaredownloadSpec? AND
+    iSTARUltra_iSTARUltraSE_iSTARUltraLT_iSTARUltrainTLS1_3signedcertificatedownloadportSpec? AND
+    iSTARUltra_iSTARUltraSE_iSTARUltraLT_InnometriksSpec?
+
+def iSTARUltraG2_SNMPSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_G2, 161) on udp)
+
+def iSTARUltraG2_HTTPSSpec as
+    ((Web_Browser_for_Diagnostics, *) -> (iSTAR_Ultra_G2, 443) on tcp)
+
+def iSTARUltraG2_CommunicationSpec as
+    ((iSTAR_Ultra_G2, *) -> (iSTAR_Ultra_G2, 2001) on udp) AND
+    ((iSTAR_Ultra_G2, *) -> (iSTAR_Ultra_G2, 28009) on tcp)
+
+def iSTARUltraG2_iSTARIP_ACMSpec as
+    ((IP_ACM2, *) -> (ISTAR_IP_ACM, 2901-2902) on tcp) AND
+    ((IP_ACM_IP_ACM2, *) -> (ISTAR_IP_ACM, 2910) on udp)
+
+def iSTARUltraG2_iSTARUltraG2FirmwaredownloadSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_G2, 21050) on tcp) OR
+    ((C_CURE_web, *) -> (iSTAR_Ultra_G2, 21050) on tcp)
+
+def iSTARUltraG2_iSTARUltraG2signedcertificatedownloadportSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_G2, 28014) on tcp)
+
+def iSTARUltraG2_InnometriksSpec as
+    (((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_G2, 33002) on tcp) AND
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_G2, 33003) on tcp) AND
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_G2, 33050) on tcp)) OR
+    (((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_G2, 33102) on tcp) AND
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_G2, 33103) on tcp) AND
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_G2, 33150) on tcp))
+
+def iSTARUltraG2Spec as
+    iSTARUltraG2_SNMPSpec? AND
+    iSTARUltraG2_HTTPSSpec? AND
+    iSTARUltraG2_CommunicationSpec? AND
+    iSTARUltraG2_iSTARIP_ACMSpec? AND
+    iSTARUltraG2_iSTARUltraG2FirmwaredownloadSpec? AND
+    iSTARUltraG2_iSTARUltraG2signedcertificatedownloadportSpec? AND
+    iSTARUltraG2_InnometriksSpec?
+
+def iSTAREdgeG2_SNMPSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Edge_G2, 161) on udp)
+
+def iSTAREdgeG2_HTTPSSpec as
+    ((Web_Browser_for_Diagnostics, *) -> (iSTAR_Edge_G2, 443) on tcp)
+
+def iSTAREdgeG2_CommunicationSpec as
+    ((iSTAR_Edge_G2_Member, *) -> (iSTAR_Edge_G2_Master, 2001) on udp) AND
+    ((iSTAR_Edge_G2_Master, *) -> (iSTAR_Edge_G2_Member, 28009) on tcp)
+
+def iSTAREdgeG2_iSTAREdgeG2FirmwaredownloadSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Edge_G2, 21050) on tcp) OR
+    ((Web_Browser_for_Diagnostics, *) -> (iSTAR_Edge_G2, 21050) on tcp)
+
+def iSTAREdgeG2_iSTAREdgeG2signedcertificatedownloadportSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Edge_G2, 28014) on tcp)
+
+def iSTAREdgeG2Spec as
+    iSTAREdgeG2_SNMPSpec AND
+    iSTAREdgeG2_HTTPSSpec AND
+    iSTAREdgeG2_CommunicationSpec AND
+    iSTAREdgeG2_iSTAREdgeG2FirmwaredownloadSpec AND
+    iSTAREdgeG2_iSTAREdgeG2signedcertificatedownloadportSpec
+
+def iSTARUltraVideo_SMTPSpec as
+    ((VideoEdge, *) -> (Mail_server, 25) on tcp)
+
+def iSTARUltraVideo_DHCPCSpec as
+    ((DHCP_server, *) -> (VideoEdge, 68) on udp)
+
+def iSTARUltraVideo_HTTPSpec as
+    ((iSTAR_Ultra_Video, *) -> (iSTAR_Ultra, 80) on tcp) OR
+    ((VideoEdge, *) -> (iSTAR_Ultra, 80) on tcp)
+
+def iSTARUltraVideo_NTPSpec as
+    ((NTP_Server, *) -> (VideoEdge, 123) on udp)
+
+def iSTARUltraVideo_SNMPSpec as
+    ((VideoEdge, *) -> (SNMP_manager, 161) on udp)
+
+def iSTARUltraVideo_SNMPTrapSpec as
+    ((VideoEdge, *) -> (SNMP_manager, 162) on udp)
+
+def iSTARUltraVideo_HTTPSSpec as
+    ((iUV_Web_client, *) -> (iSTAR_Ultra_Video, 443) on tcp) OR
+    ((VideoEdge_web_client, *) -> (VideoEdge, 443) on tcp)
+
+def iSTARUltraVideo_RTSPSpec as
+    ((Camera, *) -> (VideoEdge, 554) on tcp)
+
+def iSTARUltraVideo_RPCSpec as
+    ((Remote_Control_Client, *) -> (iSTAR_Ultra_Video, 623) on udp)
+
+def iSTARUltraVideo_MasterSpec as
+    ((iSTAR_Pro_Master_Initiators, *) -> (iSTAR_Ultra_Video, 1999) on tcp)
+
+def iSTARUltraVideo_CommunicationSpec as
+    ((IP_ACM, *) -> (iSTAR_Ultra_Video, 2900) on tcp) OR
+    ((IP_ACM2, *) -> (iSTAR_Ultra_Video, 2901-2902) on tcp)
+
+def iSTARUltraVideo_discoverySpec as
+    ((ICU, *) -> (iSTAR_Ultra_Video, 2001) on udp)
+
+def iSTARUltraVideo_iWATCHSpec as
+    ((PC_running_iWatch, *) -> (iSTAR_Ultra_Video, 2008) on tcp)
+
+def iSTARUltraVideo_RDPSpec as
+    ((RCP_client, *) -> (VideoEdge, 3389) on tcp)
+
+def iSTARUltraVideo_TransmitManagerSpec as
+    ((VideoEdge, *) -> (Transmit_Manager, 55555) on tcp)
+
+def iSTARUltraVideo_UPnPSpec as
+    ((Any, *) -> (VideoEdge, 1900) on udp)
+
+def iSTARUltraVideo_ADdiscoverySpec as
+    ((Any, *) -> (VideoEdge, 2980) on udp) AND
+    ((Any, *) -> (VideoEdge, 3702) on udp) AND
+    ((Any, *) -> (VideoEdge, 5353) on udp) AND
+    ((Any, *) -> (VideoEdge, 8848) on udp) AND
+    ((Any, *) -> (VideoEdge, 8992) on udp) AND
+    ((Any, *) -> (VideoEdge, 12345) on udp) AND
+    ((VideoEdge_Client, *) -> (VideoEdge, 32200-38199) on udp)
+
+def iSTARUltraVideo_PostgresqlSpec as
+    ((SQL, *) -> (VideoEdge, 5432) on tcp)
+
+def iSTARUltraVideo_VNCSpec as
+    ((Remote_Unit, *) -> (VideoEdge, 5900-5903) on tcp) OR
+    ((Remote_Unit, *) -> (VideoEdge, 5800-5803) on tcp)
+
+def iSTARUltraVideo_CertificatesigningSpec as
+    ((Encrypted_iSTAR_Ultra_members, *) -> (iSTAR_Ultra_Video, 28003) on tcp) AND
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (iSTAR_Ultra_Video, 28004) on tcp)
+
+def iSTARUltraVideo_iSTARMemberSpec as
+    ((Encrypted_iSTAR_Ultra_members, *) -> (iSTAR_Ultra_Video, 28009) on tcp)
+
+def iSTARUltraVideo_victorClientUDPcommunicationSpec as
+    ((VideoEdge, *) -> (victor_Client, 32200-38199) on udp)
+
+def iSTARUltraVideo_RTP_RTCPSpec as
+    ((iSTAR_Ultra_Video, *) -> (VideoEdge, 6000-7999) on udp)
+
+def iSTARUltraVideo_MulticastSpec as
+    ((VideoEdge, *) -> (Multicast_Video_Consumers, 9000-9511) on udp)
+
+def iSTARUltraVideo_RemoteTranscodingandFailoverSpec as
+    ((iSTAR_Ultra_Video, *) -> (Failover_NVR, 9000-9128) on tcp)
+
+def iSTARUltraVideoSpec as
+    iSTARUltraVideo_SMTPSpec? AND
+    iSTARUltraVideo_DHCPCSpec? AND
+    iSTARUltraVideo_HTTPSpec? AND
+    iSTARUltraVideo_NTPSpec? AND
+    iSTARUltraVideo_SNMPSpec? AND
+    iSTARUltraVideo_SNMPTrapSpec? AND
+    iSTARUltraVideo_HTTPSSpec? AND
+    iSTARUltraVideo_RTSPSpec? AND
+    iSTARUltraVideo_RPCSpec? AND
+    iSTARUltraVideo_MasterSpec? AND
+    iSTARUltraVideo_CommunicationSpec? AND
+    iSTARUltraVideo_discoverySpec? AND
+    iSTARUltraVideo_iWATCHSpec? AND
+    iSTARUltraVideo_RDPSpec? AND
+    iSTARUltraVideo_TransmitManagerSpec? AND
+    iSTARUltraVideo_UPnPSpec? AND
+    iSTARUltraVideo_ADdiscoverySpec? AND
+    iSTARUltraVideo_PostgresqlSpec? AND
+    iSTARUltraVideo_VNCSpec? AND
+    iSTARUltraVideo_CertificatesigningSpec? AND
+    iSTARUltraVideo_iSTARMemberSpec? AND
+    iSTARUltraVideo_victorClientUDPcommunicationSpec? AND
+    iSTARUltraVideo_RTP_RTCPSpec? AND
+    iSTARUltraVideo_MulticastSpec? AND
+    iSTARUltraVideo_RemoteTranscodingandFailoverSpec?
+
+def IP_ACMv1_HTTPSpec as
+    ((Web_Browser_for_Diagnostics, *) -> (IP_ACM, 80) on tcp)
+
+def IP_ACMv1Spec as
+    IP_ACMv1_HTTPSpec
+
+def IP_ACMv2_HTTPSSpec as
+    ((Web_Browser_for_Diagnostics, *) -> (IP_ACM_v2, 443) on tcp)
+
+def IP_ACMv2Spec as
+    IP_ACMv2_HTTPSSpec
+
+def HighAssurance_FICAMReaders_TLS1_2withcertificatesandHTTPSSpec as
+    ((Enrollment_Client_s, *) -> (ID_server, 443) on tcp) AND
+    ((ID_server, *) -> (The_Internet, 443) on tcp)
+
+def HighAssurance_FICAMReaders_InnometriksHA_PanelServer_exeSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (InnometriksHA_PanelServer_exe, 5002) on tcp) AND
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (InnometriksHA_PanelServer_exe, 5003) on tcp) AND
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (InnometriksHA_PanelServer_exe, 5050) on tcp)
+
+def HighAssurance_FICAMReaders_InnometriksHA_EnrollmentServer_exeSpec as
+    ((ID_server, *) -> (Enrollment_Server, 8000) on tcp)
+
+def HighAssurance_FICAMReaders_EncryptionSpec as
+    ((Enrollment_Client_s, *) -> (Enrollment_Server, 8001) on tcp) AND
+    ((Panel_Service, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 33002) on tcp) AND
+    ((Panel_Service, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 33003) on tcp) AND
+    ((Panel_Service, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 33050) on tcp)
+
+def HighAssurance_FICAMReaders_InnometriksCommunicationsG2Spec as
+    ((iSTAR_Innometriks_High_Assurance_Reader, *) -> (InnometriksCommunicationsG2, 33102) on tcp)
+
+def HighAssurance_FICAMReaders_InnometriksDownloadG2Spec as
+    ((iSTAR_Innometriks_High_Assurance_Reader, *) -> (InnometriksDownloadG2, 33103) on tcp)
+
+def HighAssurance_FICAMReaders_InnometriksTransactionLogG2Spec as
+    ((iSTAR_Innometriks_High_Assurance_Reader, *) -> (InnometriksTransactionLogG2, 33150) on tcp)
+
+def HighAssurance_FICAMReadersSpec as
+    HighAssurance_FICAMReaders_TLS1_2withcertificatesandHTTPSSpec AND
+    HighAssurance_FICAMReaders_InnometriksHA_PanelServer_exeSpec AND
+    HighAssurance_FICAMReaders_InnometriksHA_EnrollmentServer_exeSpec AND
+    HighAssurance_FICAMReaders_EncryptionSpec AND
+    HighAssurance_FICAMReaders_InnometriksCommunicationsG2Spec AND
+    HighAssurance_FICAMReaders_InnometriksDownloadG2Spec AND
+    HighAssurance_FICAMReaders_InnometriksTransactionLogG2Spec
+
+def SQLServer_SQLServerSpec as
+    ((C_CURE_Application_Servers, *) -> (SQL_Server, 1433) on tcp) AND
+    ((Satellite_Application_Server_SAS, *) -> (SQL_Server, 1433) on tcp)
+
+def SQLServer_SQLServerBrowserSpec as
+    ((SQL_Clients, *) -> (SQL_Server_Browser, 1434) on udp)
+
+def SQLServerSpec as
+    SQLServer_SQLServerSpec AND
+    SQLServer_SQLServerBrowserSpec?
+
+def iSTARConfigurationUtilityICU_DiscoverySpec as
+    ((ISTAR, *) -> (ICU, 2001) on udp) AND
+    ((IP_ACM_Family, *) -> (ICU, 2910) on udp)
+
+def iSTARConfigurationUtilityICU_ConfigurationSpec as
+    ((ICU, *) -> (ISTAR, 2801) on tcp)
+
+def iSTARConfigurationUtilityICU_ICU_LightTPDSpec as
+    ((iSTAR_Ultra, *) -> (ICU, 9701) on tcp)
+
+def iSTARConfigurationUtilityICUSpec as
+    iSTARConfigurationUtilityICU_DiscoverySpec AND
+    iSTARConfigurationUtilityICU_ConfigurationSpec AND
+    iSTARConfigurationUtilityICU_ICU_LightTPDSpec
+
+def C_CURE9000SiteServerv2_90_IIS_VideoEdgeNVRAdmin_AlarmPortSpec as
+    ((C_CURE_9000_SiteServer, *) -> (IIS_for_HTTP, 80) on tcp) OR
+    ((C_CURE_9000_SiteServer, *) -> (VideoEdge, 80) on tcp)
+
+def C_CURE9000SiteServerv2_90_vAS_C_CUREclienttimesynchronizationSpec as
+    ((C_CURE_9000_SiteServer, *) -> (Time_Synchronization_Clients, 123) on udp)
+
+def C_CURE9000SiteServerv2_90_vAS_C_CUREclientoutgoingtimesynchronizationSpec as
+    ((Time_Synchronization_Clients, *) -> (NTP_Server, 123) on udp)
+
+def C_CURE9000SiteServerv2_90_LDAPSpec as
+    ((LDAP_Server, *) -> (C_CURE_9000_SiteServer, 389) on tcp)
+
+def C_CURE9000SiteServerv2_90_C_CUREWebSpec as
+    ((C_CURE_9000_SiteServer, *) -> (C_CURE_web, 443) on tcp)
+
+def C_CURE9000SiteServerv2_90_VENRLiveSpec as
+    ((C_CURE_9000_SiteServer, *) -> (VENRLive, 554) on tcp)
+
+def C_CURE9000SiteServerv2_90_WindowsDNSSpec as
+    ((C_CURE_9000_SiteServer, *) -> (Windows_DNS, 1025) on udp)
+
+def C_CURE9000SiteServerv2_90_iSTAREdge_eXiSTARtoC_CUREcommunicationSpec as
+    ((iSTAR_Edge_eX_Panels, *) -> (C_CURE_9000_SiteServer, 1025-5000) on tcp)
+
+def C_CURE9000SiteServerv2_90_SQL1433TCPSpec as
+    ((C_CURE_9000_SiteServer, *) -> (SQL_Server, 1433) on tcp)
+
+def C_CURE9000SiteServerv2_90_SQL1433UDPSpec as
+    ((C_CURE_9000_SiteServer, *) -> (SQL_Server, 1433) on udp) AND
+    ((SQL_Database_Clients, *) -> (SQL_Server, 1434) on udp)
+
+def C_CURE9000SiteServerv2_90_iSTARmasterportforincomingsecondarycommunicationSpec as
+    ((C_CURE_9000_SiteServer, *) -> (iSTAR_Master_Panels, 1999) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARportforICUbroadcastsSpec as
+    ((iSTAR, *) -> (C_CURE_9000_SiteServer, 2001) on udp)
+
+def C_CURE9000SiteServerv2_90_ICUbroadcastSpec as
+    ((ICU, *) -> (C_CURE_9000_SiteServer, 2001) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARhostportforiSTARdriverSpec as
+    ((C_CURE_9000_SiteServer, *) -> (ISTAR, 2800) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARhostportforiSTARdriveroutSpec as
+    ((ISTAR, *) -> (C_CURE_9000_SiteServer, 2800) on tcp) AND
+    ((ISTAR, *) -> (C_CURE_9000_SiteServer, 2800) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARICUhostportiSTARdriverSpec as
+    ((C_CURE_9000_SiteServer, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 2800) on udp)
+
+def C_CURE9000SiteServerv2_90_iSTARICUhostportiSTARdriveroutSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (C_CURE_9000_SiteServer, 2800) on udp)
+
+def C_CURE9000SiteServerv2_90_iSTARfastpersonneldownloadhostportSpec as
+    ((ISTAR, *) -> (C_CURE_9000_SiteServer, 2801) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARfastimagedownloadhostportSpec as
+    ((Client, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 2802) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARencryptionportiSTARProonlySpec as
+    ((C_CURE_9000_SiteServer, *) -> (iSTAR_Pro, 2803) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARUltrafastSQLitepersonneldatabasedownload_Spec as
+    ((iSTAR_Ultra, *) -> (C_CURE_9000_SiteServer, 2804) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARUltrapaneluploadspersonneldatabasefiletohost_Spec as
+    ((iSTAR_Ultra, *) -> (C_CURE_9000_SiteServer, 2816) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARUltratoIP_ACMSpec as
+    ((iSTAR_Ultra, *) -> (IP_ACM, 2900) on tcp)
+
+def C_CURE9000SiteServerv2_90_IP_ACMSpec as
+    ((C_CURE_9000_SiteServer, *) -> (IP_ACM, 2910) on udp)
+
+def C_CURE9000SiteServerv2_90_iSTARUltraSSLtoIP_ACM2Spec as
+    ((iSTAR_Ultra, *) -> (IP_ACM_2, 2901) on tcp)
+
+def C_CURE9000SiteServerv2_90_ReservedforenhancedSSLIP_ACM2toiSTARUltra_Spec as
+    ((IP_ACM_2, *) -> (iSTAR_Ultra, 2902) on tcp)
+
+def C_CURE9000SiteServerv2_90_veAutoDiscScan_Discoveryofdevices_cancloseaftersetup_Spec as
+    ((Any, *) -> (C_CURE_9000_SiteServer, 2980) on udp)
+
+def C_CURE9000SiteServerv2_90_HTTPforC_CUREWebSpec as
+    ((Client, *) -> (C_CURE_9000_SiteServer, 3000) on tcp)
+
+def C_CURE9000SiteServerv2_90_IntellexServerSpec as
+    ((C_CURE_9000_SiteServer, *) -> (Intellex, 5000) on tcp)
+
+def C_CURE9000SiteServerv2_90_IntellexLiveSpec as
+    ((Intellex_Live, *) -> (C_CURE_9000_SiteServer, 5001) on tcp)
+
+def C_CURE9000SiteServerv2_90_InnometrikscommunicationbetweenIDserverandiSTAR_Spec as
+    ((ID_server, *) -> (ISTAR, 5002, 5050) on tcp)
+
+def C_CURE9000SiteServerv2_90_IntellexAlarmSpec as
+    ((Intellex, *) -> (C_CURE_9000_SiteServer, 5003) on tcp)
+
+def C_CURE9000SiteServerv2_90_VideoEdgePostgresqlSpec as
+    ((C_CURE_9000_SiteServer, *) -> (VideoEdge_Postgresql, 5432) on tcp)
+
+def C_CURE9000SiteServerv2_90_HTTPforC_CUREWebdatabaseSpec as
+    ((Client, *) -> (C_CURE_9000_SiteServer, 5984) on tcp)
+
+def C_CURE9000SiteServerv2_90_VideoEdgeUDPPortsSpec as
+    ((C_CURE_9000_SiteServer, *) -> (VideoEdge, 6000-7999) on udp)
+
+def C_CURE9000SiteServerv2_90_VideoEdgeClient_CameraRTP_RTCPSpec as
+    ((C_CURE_9000_SiteServer, *) -> (VideoEdge_Client_Camera, 6000-7999) on udp)
+
+def C_CURE9000SiteServerv2_90_InnometriksincomingenrollmentsfromC_CUREFICAMclient_Spec as
+    ((C_CURE_FICAM_client, *) -> (C_CURE_9000_SiteServer, 8000) on tcp)
+
+def C_CURE9000SiteServerv2_90_SystemTraceURISpec as
+    ((System_Trace_Client, *) -> (C_CURE_9000_SiteServer, 8005) on tcp)
+
+def C_CURE9000SiteServerv2_90_RemotehardwareinterfacelistURI_Spec as
+    ((Remote_Hardware_Interface_Client, *) -> (C_CURE_9000_SiteServer, 8006) on tcp)
+
+def C_CURE9000SiteServerv2_90_AutoUpdateSpec as
+    ((Client, *) -> (C_CURE_9000_SiteServer, 8085) on tcp)
+
+def C_CURE9000SiteServerv2_90_VideoEdgediscoveryofdevicescancloseaftersetup_Spec as
+    ((VideoEdge, *) -> (C_CURE_9000_SiteServer, 8848, 12345) on udp)
+
+def C_CURE9000SiteServerv2_90_BaseAddressofDriverServiceSpec as
+    ((Any, *) -> (C_CURE_9000_SiteServer, 8985) on tcp)
+
+def C_CURE9000SiteServerv2_90_C_CURE9000hostSpec as
+    ((C_CURE_9000_SiteServer, *) -> (C_CURE_9000_host, 8995-8999) on tcp)
+
+def C_CURE9000SiteServerv2_90_VideoEdgeclient_cameramulticastportrange_Spec as
+    ((C_CURE_9000_SiteServer, *) -> (VideoEdge_Client_Camera, 9000-9511) on udp)
+
+def C_CURE9000SiteServerv2_90_NVRremotetranscodingandfailover_Spec as
+    ((C_CURE_9000_SiteServer, *) -> (NVR, 9000-9128) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARUltradownloadfirmwareSpec as
+    ((C_CURE_9000_SiteServer, *) -> (iSTAR_Ultra, 9701) on tcp)
+
+def C_CURE9000SiteServerv2_90_VideoEdgeHDVRadmin_line_alarmportSpec as
+    ((C_CURE_9000_SiteServer, *) -> (VideoEdge_HDVR, 22609) on tcp)
+
+def C_CURE9000SiteServerv2_90_TycoESSLicenseVendorDaemon_Spec as
+    ((C_CURE_9000_SiteServer, *) -> (TycoESS_License_Vendor_Daemon, 27010) on udp)
+
+def C_CURE9000SiteServerv2_90_TycoESSLicenseServiceSpec as
+    ((TycoESS_License_Service, *) -> (C_CURE_9000_SiteServer, 27000) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARhostportforiSTARdriver2Spec as
+    ((ISTAR, *) -> (C_CURE_9000_SiteServer, 28000) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTAR_Edge_Ultra_eX_fastdownloadconnection_Spec as
+    ((iSTAR_Member, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 28001) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTAREdge_Ultra_eXfastimagedownloadSpec as
+    ((iSTAR_eX_Edge_Ultra_Panels, *) -> (C_CURE_9000_SiteServer, 28002) on tcp)
+
+def C_CURE9000SiteServerv2_90_C_CURE9000acceptiSTAREdge_Ultra_eXrequestsforcertificatesigning_Spec as
+    ((iSTAR_eX_Edge_Ultra_Panels, *) -> (C_CURE_9000_SiteServer, 28003) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTAREdge_Ultra_Ex_AcceptasignedcertificateSpec as
+    ((C_CURE_9000_SiteServer, *) -> (iSTAR_eX_Edge_Ultra_Panels, 28004) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARUltra_eXforconnectionmadetohost2ndIP_namewithdualIPconfigured_Spec as
+    ((iSTAR_eX_Edge_Ultra_Panels, *) -> (C_CURE_9000_SiteServer, 28005) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTAREdge_Ultra_eXformemberconnectiontoalternatemaster_Spec as
+    ((iSTAR_eX_Edge_Ultra_Panels, *) -> (C_CURE_9000_SiteServer, 28006) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTAREdge_Ultra_eXforalternatemasterhostconnection_Spec as
+    ((Encrypted_iSTAR_Panels, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 28007) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTAREdge_Ultra_eXmasterportforincomingmemberconnections_Spec as
+    ((iSTAR_eX_Edge_Ultra_Panels, *) -> (C_CURE_9000_SiteServer, 28008) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTAREdge_Ultra_eXcommunicationSpec as
+    ((iSTAR_eX_Edge_Ultra_Panels, *) -> (C_CURE_9000_SiteServer, 28010) on tcp)
+
+def C_CURE9000SiteServerv2_90_HostportforencrypteduploadingSQLitepersonneldatabasefile_UsedforTLS1_2encryptionmode_Spec as
+    ((iSTAR_Ultra, *) -> (C_CURE_9000_SiteServer, 28016) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARdriverportforconnectionwithiSTAREdgeG2andiSTARUltraG2_Spec as
+    ((iSTAR_G2_Panels, *) -> (C_CURE_9000_SiteServer, 28110) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARdriverfastdownloadportforiSTAREdgeG2andiSTARUltraG2_Spec as
+    ((iSTAR_G2_Panels_for_Fast_Download, *) -> (C_CURE_9000_SiteServer, 28104) on tcp)
+
+def C_CURE9000SiteServerv2_90_iSTARdrivercertificatesignrequestforiSTAREdgeG2andiSTARUltraG2_Spec as
+    ((iSTAR_G2_Panels, *) -> (C_CURE_9000_SiteServer, 28013) on tcp)
+
+def C_CURE9000SiteServerv2_90_C_CUREuploadpersonneldatabasefrompanelforusewiththeiSTAREdgeG2andiSTARUltraG2_UsedforTLS1_3encryptionmode_Spec as
+    ((iSTAR_G2_Panels_for_TLS_1_3_Personnel_Upload, *) -> (C_CURE_9000_SiteServer, 28116) on tcp)
+
+def C_CURE9000SiteServerv2_90_DefaultVideoEdgeUDPportrangeforvictorclientconnections_Spec as
+    ((C_CURE_9000_SiteServer, *) -> (VideoEdge, 32200-38199) on udp)
+
+def C_CURE9000SiteServerv2_90_C_CUREsupportcommunicationwithInnometriksHighAssurancereader_Spec as
+    ((iSTAR_Innometriks_High_Assurance_Reader, *) -> (C_CURE_9000_SiteServer, 33102) on tcp)
+
+def C_CURE9000SiteServerv2_90_C_CUREsupportdatadownloadstoInnometriksHighAssurancereader_Spec as
+    ((iSTAR_Innometriks_High_Assurance_Reader, *) -> (C_CURE_9000_SiteServer, 33103) on tcp)
+
+def C_CURE9000SiteServerv2_90_C_CUREsupporttransactionlogfromInnometriksHighAssurancereader_Spec as
+    ((iSTAR_Innometriks_High_Assurance_Reader, *) -> (C_CURE_9000_SiteServer, 33150) on tcp)
+
+def C_CURE9000SiteServerv2_90Spec as
+    C_CURE9000SiteServerv2_90_IIS_VideoEdgeNVRAdmin_AlarmPortSpec? AND
+    C_CURE9000SiteServerv2_90_vAS_C_CUREclienttimesynchronizationSpec? AND
+    C_CURE9000SiteServerv2_90_vAS_C_CUREclientoutgoingtimesynchronizationSpec? AND
+    C_CURE9000SiteServerv2_90_LDAPSpec? AND
+    C_CURE9000SiteServerv2_90_C_CUREWebSpec? AND
+    C_CURE9000SiteServerv2_90_VENRLiveSpec? AND
+    C_CURE9000SiteServerv2_90_WindowsDNSSpec? AND
+    C_CURE9000SiteServerv2_90_iSTAREdge_eXiSTARtoC_CUREcommunicationSpec? AND
+    C_CURE9000SiteServerv2_90_SQL1433TCPSpec AND
+    C_CURE9000SiteServerv2_90_SQL1433UDPSpec? AND
+    C_CURE9000SiteServerv2_90_iSTARmasterportforincomingsecondarycommunicationSpec? AND
+    C_CURE9000SiteServerv2_90_iSTARportforICUbroadcastsSpec? AND
+    C_CURE9000SiteServerv2_90_ICUbroadcastSpec? AND
+    C_CURE9000SiteServerv2_90_iSTARhostportforiSTARdriverSpec? AND
+    C_CURE9000SiteServerv2_90_iSTARhostportforiSTARdriveroutSpec? AND
+    C_CURE9000SiteServerv2_90_iSTARICUhostportiSTARdriverSpec? AND
+    C_CURE9000SiteServerv2_90_iSTARICUhostportiSTARdriveroutSpec? AND
+    C_CURE9000SiteServerv2_90_iSTARfastpersonneldownloadhostportSpec? AND
+    C_CURE9000SiteServerv2_90_iSTARfastimagedownloadhostportSpec? AND
+    C_CURE9000SiteServerv2_90_iSTARencryptionportiSTARProonlySpec? AND
+    C_CURE9000SiteServerv2_90_iSTARUltrafastSQLitepersonneldatabasedownload_Spec? AND
+    C_CURE9000SiteServerv2_90_iSTARUltrapaneluploadspersonneldatabasefiletohost_Spec? AND
+    C_CURE9000SiteServerv2_90_iSTARUltratoIP_ACMSpec? AND
+    C_CURE9000SiteServerv2_90_IP_ACMSpec? AND
+    C_CURE9000SiteServerv2_90_iSTARUltraSSLtoIP_ACM2Spec? AND
+    C_CURE9000SiteServerv2_90_ReservedforenhancedSSLIP_ACM2toiSTARUltra_Spec? AND
+    C_CURE9000SiteServerv2_90_veAutoDiscScan_Discoveryofdevices_cancloseaftersetup_Spec? AND
+    C_CURE9000SiteServerv2_90_HTTPforC_CUREWebSpec? AND
+    C_CURE9000SiteServerv2_90_IntellexServerSpec? AND
+    C_CURE9000SiteServerv2_90_IntellexLiveSpec? AND
+    C_CURE9000SiteServerv2_90_InnometrikscommunicationbetweenIDserverandiSTAR_Spec? AND
+    C_CURE9000SiteServerv2_90_IntellexAlarmSpec? AND
+    C_CURE9000SiteServerv2_90_VideoEdgePostgresqlSpec? AND
+    C_CURE9000SiteServerv2_90_HTTPforC_CUREWebdatabaseSpec? AND
+    C_CURE9000SiteServerv2_90_VideoEdgeUDPPortsSpec? AND
+    C_CURE9000SiteServerv2_90_VideoEdgeClient_CameraRTP_RTCPSpec? AND
+    C_CURE9000SiteServerv2_90_InnometriksincomingenrollmentsfromC_CUREFICAMclient_Spec? AND
+    C_CURE9000SiteServerv2_90_SystemTraceURISpec? AND
+    C_CURE9000SiteServerv2_90_RemotehardwareinterfacelistURI_Spec? AND
+    C_CURE9000SiteServerv2_90_AutoUpdateSpec? AND
+    C_CURE9000SiteServerv2_90_VideoEdgediscoveryofdevicescancloseaftersetup_Spec? AND
+    C_CURE9000SiteServerv2_90_BaseAddressofDriverServiceSpec? AND
+    C_CURE9000SiteServerv2_90_C_CURE9000hostSpec? AND
+    C_CURE9000SiteServerv2_90_VideoEdgeclient_cameramulticastportrange_Spec? AND
+    C_CURE9000SiteServerv2_90_NVRremotetranscodingandfailover_Spec? AND
+    C_CURE9000SiteServerv2_90_iSTARUltradownloadfirmwareSpec? AND
+    C_CURE9000SiteServerv2_90_VideoEdgeHDVRadmin_line_alarmportSpec? AND
+    C_CURE9000SiteServerv2_90_TycoESSLicenseVendorDaemon_Spec? AND
+    C_CURE9000SiteServerv2_90_TycoESSLicenseServiceSpec? AND
+    C_CURE9000SiteServerv2_90_iSTARhostportforiSTARdriver2Spec? AND
+    C_CURE9000SiteServerv2_90_iSTAR_Edge_Ultra_eX_fastdownloadconnection_Spec? AND
+    C_CURE9000SiteServerv2_90_iSTAREdge_Ultra_eXfastimagedownloadSpec? AND
+    C_CURE9000SiteServerv2_90_C_CURE9000acceptiSTAREdge_Ultra_eXrequestsforcertificatesigning_Spec? AND
+    C_CURE9000SiteServerv2_90_iSTAREdge_Ultra_Ex_AcceptasignedcertificateSpec? AND
+    C_CURE9000SiteServerv2_90_iSTARUltra_eXforconnectionmadetohost2ndIP_namewithdualIPconfigured_Spec? AND
+    C_CURE9000SiteServerv2_90_iSTAREdge_Ultra_eXformemberconnectiontoalternatemaster_Spec? AND
+    C_CURE9000SiteServerv2_90_iSTAREdge_Ultra_eXforalternatemasterhostconnection_Spec? AND
+    C_CURE9000SiteServerv2_90_iSTAREdge_Ultra_eXmasterportforincomingmemberconnections_Spec? AND
+    C_CURE9000SiteServerv2_90_iSTAREdge_Ultra_eXcommunicationSpec? AND
+    C_CURE9000SiteServerv2_90_HostportforencrypteduploadingSQLitepersonneldatabasefile_UsedforTLS1_2encryptionmode_Spec? AND
+    C_CURE9000SiteServerv2_90_iSTARdriverportforconnectionwithiSTAREdgeG2andiSTARUltraG2_Spec? AND
+    C_CURE9000SiteServerv2_90_iSTARdriverfastdownloadportforiSTAREdgeG2andiSTARUltraG2_Spec? AND
+    C_CURE9000SiteServerv2_90_iSTARdrivercertificatesignrequestforiSTAREdgeG2andiSTARUltraG2_Spec? AND
+    C_CURE9000SiteServerv2_90_C_CUREuploadpersonneldatabasefrompanelforusewiththeiSTAREdgeG2andiSTARUltraG2_UsedforTLS1_3encryptionmode_Spec? AND
+    C_CURE9000SiteServerv2_90_DefaultVideoEdgeUDPportrangeforvictorclientconnections_Spec? AND
+    C_CURE9000SiteServerv2_90_C_CUREsupportcommunicationwithInnometriksHighAssurancereader_Spec? AND
+    C_CURE9000SiteServerv2_90_C_CUREsupportdatadownloadstoInnometriksHighAssurancereader_Spec? AND
+    C_CURE9000SiteServerv2_90_C_CUREsupporttransactionlogfromInnometriksHighAssurancereader_Spec?
+
+def OtherComponents_SSHStratuseverRun_CustomerSupportnodeaccess_Spec as
+    ((Stratus_everRun_client, *) -> (Stratus_everRun_Server, 22) on tcp)
+
+def OtherComponents_SSH_StratuseverRun_ActiveDirectorySpec as
+    ((Stratus_everRun_client, *) -> (Stratus_everRun_Server, 53) on udp)
+
+def OtherComponents_everRun_IISSpec as
+    ((Stratus_everRun_client, *) -> (Stratus_everRun_Server, 80) on tcp)
+
+def OtherComponents_VideoEdge_NVRAdmin_AlarmPortSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (VideoEdge, 80) on tcp) AND
+    ((VideoEdge_Client, *) -> (VideoEdge, 80) on tcp)
+
+def OtherComponents_DedicatedMicroSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Dedicated_Micro_Recorder, 80) on tcp)
+
+def OtherComponents_Bosch_VideoSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Bosch_Recorder, 80) on tcp)
+
+def OtherComponents_NTPSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (NTP_Server, 123) on udp) OR
+    ((Client, *) -> (NTP_Server, 123) on udp)
+
+def OtherComponents_ArcServe_RHAControlserviceserverandtheengineserverSpec as
+    ((Stratus_everRun_client, *) -> (Stratus_everRun_Server, 135) on udp) AND
+    ((Stratus_everRun_client, *) -> (Stratus_everRun_Server, 137) on udp) AND
+    ((Stratus_everRun_client, *) -> (Stratus_everRun_Server, 138) on udp)
+
+def OtherComponents_LDAPSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (LDAP_Server, 389) on tcp) OR
+    ((LDAP_Clients, *) -> (LDAP_Server, 389) on tcp)
+
+def OtherComponents_everRun_HTTPSCommunicationsSpec as
+    ((everRun_Web_client, *) -> (Stratus_everRun_Server, 443) on tcp) AND
+    ((C_CURE_Go, *) -> (Stratus_everRun_Server, 443) on tcp)
+
+def OtherComponents_RTSPstreamSpec as
+    ((Video_Consumers, *) -> (VideoEdge, 554) on tcp)
+
+def OtherComponents_ArcServe_RHAcontrolservicecenterWindowsDNSSpec as
+    ((ArcServe_client, *) -> (ArcServe_server, 1025) on tcp)
+
+def OtherComponents_Sur_GuardSpec as
+    ((Sur_Guard, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 1025) on tcp)
+
+def OtherComponents_KONEElevatorSpec as
+    ((KONE_Elevator, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 2004, 2005) on tcp)
+
+def OtherComponents_everRun_quorumservicecomputersandXenServerhostsSpec as
+    ((Stratus_everRun_client, *) -> (Stratus_everRun_Server, 2188-2189) on tcp)
+
+def OtherComponents_CrossFireAssaAbloyDriverServiceSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Assa_Abloy_DSR, 2571) on tcp)
+
+def OtherComponents_CommendIntercomserverSpec as
+    ((Commend_Intercom_server, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 3001) on tcp)
+
+def OtherComponents_ITV2Spec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (DSC_PowerSeries, 3072) on tcp)
+
+def OtherComponents_IntellexBaseSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (American_Dynamics_Intellex_Server, 5000) on tcp)
+
+def OtherComponents_IntellexLiveSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (American_Dynamics_Intellex_Server, 5001) on tcp)
+
+def OtherComponents_IntellexAlarmSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (American_Dynamics_Intellex_Server, 5003) on tcp)
+
+def OtherComponents_ISCControllercommunicationSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Inner_Range_ISC_Controller, 5000-5003) on tcp) OR
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Inner_Range_ISC_Controller, 6000-6003) on tcp)
+
+def OtherComponents_TOASpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (TOA_server, 5001) on tcp)
+
+def OtherComponents_ISCPointChangePortSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Inner_Range_ISC, 5025) on tcp)
+
+def OtherComponents_ISCVersionAttendancePortSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Inner_Range_ISC, 5026) on tcp)
+
+def OtherComponents_MastermindSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Mastermind_System, 5050) on tcp)
+
+def OtherComponents_VNCwithLinuxVMsSpec as
+    ((Stratus_everRun_client, *) -> (Stratus_everRun_Server, 5900) on tcp)
+
+def OtherComponents_BoschSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Bosch, 7800) on udp) AND
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Bosch, 7900) on udp)
+
+def OtherComponents_MatrixVideoSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Matrix_Recorder, 8016) on tcp)
+
+def OtherComponents_ThyssenKruppElevatorSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (ThyssenKrupp_Elevator, 8038-8041) on udp)
+
+def OtherComponents_Identiv_3VRSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Identiv_3VR_Recorder, 8080) on tcp)
+
+def OtherComponents_StratuseverRun_eACSpec as
+    ((Stratus_everRun_client, *) -> (Stratus_everRun_Server, 8080-8081) on tcp)
+
+def OtherComponents_ASSAABLOY_DSRSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Assa_Abloy_DSR, 9090) on tcp)
+
+def OtherComponents_SerialSpec as
+    ((Serial_Devices_via_Lantronix, *) -> (Lantronix, 10001-10002) on tcp)
+
+def OtherComponents_Honeywell_GalaxySpec as
+    ((Honeywell_Galaxy_panel, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 10001-10002) on tcp)
+
+def OtherComponents_HDVRAdmin_Line_AlarmPortSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (VideoEdge_HDVR, 22609) on tcp)
+
+def OtherComponents_Zettler_MZXSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Zettler_MZX, 47808) on udp)
+
+def OtherComponents_OtisElevatorSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Otis_Elevator, 45303, 45307, 45308, 46307, 46308, 47307) on udp)
+
+def OtherComponents_BACnetSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (BACnet_controller, 47808) on tcp)
+
+def OtherComponents_Elpas_Spec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Elpas, 1001) on tcp)
+
+def OtherComponents_SchindlerElevatorSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (Schindler_Elevator, 4040, 5050) on tcp)
+
+def OtherComponents_CEMSystemsSpec as
+    ((CEM_Systems_CDC_Server, *) -> (C_CURE_9000_Server_victor_Application_Server_vAS, 30000) on tcp)
+
+def OtherComponents_EntraPassSpec as
+    ((C_CURE_9000_Server_victor_Application_Server_vAS, *) -> (EntraPass_Server, 8801) on tcp)
+
+def OtherComponentsSpec as
+    OtherComponents_SSHStratuseverRun_CustomerSupportnodeaccess_Spec? AND
+    OtherComponents_SSH_StratuseverRun_ActiveDirectorySpec? AND
+    OtherComponents_everRun_IISSpec? AND
+    OtherComponents_VideoEdge_NVRAdmin_AlarmPortSpec? AND
+    OtherComponents_DedicatedMicroSpec? AND
+    OtherComponents_Bosch_VideoSpec? AND
+    OtherComponents_NTPSpec? AND
+    OtherComponents_ArcServe_RHAControlserviceserverandtheengineserverSpec? AND
+    OtherComponents_LDAPSpec? AND
+    OtherComponents_everRun_HTTPSCommunicationsSpec? AND
+    OtherComponents_RTSPstreamSpec? AND
+    OtherComponents_ArcServe_RHAcontrolservicecenterWindowsDNSSpec? AND
+    OtherComponents_Sur_GuardSpec? AND
+    OtherComponents_KONEElevatorSpec? AND
+    OtherComponents_everRun_quorumservicecomputersandXenServerhostsSpec? AND
+    OtherComponents_CrossFireAssaAbloyDriverServiceSpec? AND
+    OtherComponents_CommendIntercomserverSpec? AND
+    OtherComponents_ITV2Spec? AND
+    OtherComponents_IntellexBaseSpec? AND
+    OtherComponents_IntellexLiveSpec? AND
+    OtherComponents_IntellexAlarmSpec? AND
+    OtherComponents_ISCControllercommunicationSpec? AND
+    OtherComponents_TOASpec? AND
+    OtherComponents_ISCPointChangePortSpec? AND
+    OtherComponents_ISCVersionAttendancePortSpec? AND
+    OtherComponents_MastermindSpec? AND
+    OtherComponents_VNCwithLinuxVMsSpec? AND
+    OtherComponents_BoschSpec? AND
+    OtherComponents_MatrixVideoSpec? AND
+    OtherComponents_ThyssenKruppElevatorSpec? AND
+    OtherComponents_Identiv_3VRSpec? AND
+    OtherComponents_StratuseverRun_eACSpec? AND
+    OtherComponents_ASSAABLOY_DSRSpec? AND
+    OtherComponents_SerialSpec? AND
+    OtherComponents_Honeywell_GalaxySpec? AND
+    OtherComponents_HDVRAdmin_Line_AlarmPortSpec? AND
+    OtherComponents_Zettler_MZXSpec? AND
+    OtherComponents_OtisElevatorSpec? AND
+    OtherComponents_BACnetSpec? AND
+    OtherComponents_Elpas_Spec? AND
+    OtherComponents_SchindlerElevatorSpec? AND
+    OtherComponents_CEMSystemsSpec? AND
+    OtherComponents_EntraPassSpec?
+
+def FirewallSpecificationSpec as
+    C_CURE9000ServervictorApplicationServervASSpec? AND
+    C_CUREIQC_CUREWebandC_CUREPortalSpec? AND
+    iSTAREdge_eXSpec? AND
+    iSTARProSpec? AND
+    iSTARUltra_iSTARUltraSE_iSTARUltraLTSpec? AND
+    iSTARUltraG2Spec? AND
+    iSTAREdgeG2Spec? AND
+    iSTARUltraVideoSpec? AND
+    IP_ACMv1Spec? AND
+    IP_ACMv2Spec? AND
+    HighAssurance_FICAMReadersSpec? AND
+    SQLServerSpec AND
+    iSTARConfigurationUtilityICUSpec? AND
+    C_CURE9000SiteServerv2_90Spec? AND
+    OtherComponentsSpec?

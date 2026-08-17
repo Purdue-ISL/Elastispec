@@ -1,0 +1,105 @@
+ASA Version 9.12(4)
+!
+hostname toy-papercut-fw
+!
+! ============================================================================
+! ASA twin of toy_firewall_config.txt (same topology, same security policy),
+! expressed in Cisco ASA idiom:
+! - object-groups for hosts, subnets, and service ports (ASA policies are
+!   normally written this way),
+! - real netmasks (ASA does not use IOS wildcard masks),
+! - nameif interface labels (these appear in the auditor's outputs), and
+! - egress access-groups on the protected interfaces.
+!
+! All interfaces share security-level 100 with inter-interface traffic
+! permitted, so no implicit security-level filtering applies. The client
+! and web interfaces carry no ACLs at all; the two protected interfaces
+! (servers, datacenter) each carry an ACL pair, exactly like the IOS twin:
+! - "out" governs traffic INTO the zone (destination-side enforcement), and
+! - "in" governs the zone's own OUTBOUND traffic: permit ip any any
+!   (allow-all outbound).
+!
+! Auditing this config produces the same 33 leaf verdicts as the IOS twin;
+! only cosmetic details differ (interface labels in reachability/conjecture
+! output use nameif names such as "ece" instead of "GigabitEthernet0/0").
+! ============================================================================
+!
+same-security-traffic permit inter-interface
+!
+interface GigabitEthernet0/0
+ nameif ece
+ security-level 100
+ ip address 10.10.20.1 255.255.255.0
+!
+interface GigabitEthernet0/1
+ nameif cs
+ security-level 100
+ ip address 10.10.30.1 255.255.255.0
+!
+interface GigabitEthernet0/2
+ nameif servers
+ security-level 100
+ ip address 172.16.10.1 255.255.255.0
+!
+interface GigabitEthernet0/3
+ nameif datacenter
+ security-level 100
+ ip address 172.16.20.1 255.255.255.0
+!
+interface GigabitEthernet0/4
+ nameif web
+ security-level 100
+ ip address 203.0.113.1 255.255.255.0
+!
+object-group network CAMPUS
+ network-object 10.0.0.0 255.0.0.0
+!
+object-group network SERVER_POOL
+ network-object host 172.16.10.2
+ network-object host 172.16.10.3
+!
+object-group network QUARANTINED_CLIENTS
+ network-object host 10.10.20.66
+!
+object-group network SERVER_SUBNET
+ network-object 172.16.10.0 255.255.255.0
+!
+object-group network PG_DATABASE
+ network-object host 172.16.20.40
+!
+object-group service MFD_INTEGRATION_PORTS
+ service-object tcp destination eq 9191
+ service-object tcp destination eq 9192
+ service-object tcp destination eq 9193
+ service-object tcp destination eq 10389
+!
+object-group service SNMP_TRAP
+ service-object udp destination eq 162
+!
+object-group service MOBILITY_PRINT_PORTS
+ service-object tcp destination eq 9163
+ service-object tcp destination eq 9164
+!
+object-group service POSTGRES
+ service-object tcp destination eq 5432
+!
+! What may reach the server pool: quarantine first, then campus sources on
+! the embedded-MFD integration ports and the Mobility Print printing ports.
+! udp/5353 (mDNS) and tcp+udp/53 (DNS) are deliberately NOT opened.
+access-list TO-SERVERS extended deny ip object-group QUARANTINED_CLIENTS object-group SERVER_POOL
+access-list TO-SERVERS extended permit object-group MFD_INTEGRATION_PORTS object-group CAMPUS object-group SERVER_POOL
+access-list TO-SERVERS extended permit object-group SNMP_TRAP object-group CAMPUS object-group SERVER_POOL
+access-list TO-SERVERS extended permit object-group MOBILITY_PRINT_PORTS object-group CAMPUS object-group SERVER_POOL
+!
+! Only the application-server subnet may reach the PostgreSQL database.
+access-list TO-DATACENTER extended permit object-group POSTGRES object-group SERVER_SUBNET object-group PG_DATABASE
+!
+! The protected zones' own outbound traffic: allow-all.
+access-list SERVERS-OUTBOUND extended permit ip any any
+access-list DATACENTER-OUTBOUND extended permit ip any any
+!
+access-group TO-SERVERS out interface servers
+access-group SERVERS-OUTBOUND in interface servers
+access-group TO-DATACENTER out interface datacenter
+access-group DATACENTER-OUTBOUND in interface datacenter
+!

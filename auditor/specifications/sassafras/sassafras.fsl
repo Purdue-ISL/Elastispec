@@ -1,0 +1,72 @@
+def PRS_HTTPS_Bundle_Spec as
+    ((KeyServer_Process_ks, *) -> (Sassafras_Product_Recognition_Service_prs_sassafras_com, 443) on tcp) AND
+    ((ks_prs_Helper_Utility, *) -> (Sassafras_Product_Recognition_Service_prs_sassafras_com, 443) on tcp)
+
+def PRS_HTTP_Bundle_Spec as
+    ((KeyServer_Process_ks, *) -> (Sassafras_Product_Recognition_Service_prs_sassafras_com, 80) on tcp) AND
+    ((ks_prs_Helper_Utility, *) -> (Sassafras_Product_Recognition_Service_prs_sassafras_com, 80) on tcp)
+
+def PRS_Coherent_Communication_Spec as
+    PRS_HTTPS_Bundle_Spec? AND PRS_HTTP_Bundle_Spec? AND ((KeyReporter_Web_Service, *) -> (Sassafras_Product_Recognition_Service_prs_sassafras_com, 443, 80) on tcp)
+
+def General_OpenStreetMapCommunicationSpec as
+    ((KeyReporter_Web_Service, *) -> (OpenStreetMap_Tile_Servers, 80) on tcp)
+
+def General_KeyConfigureExternalCommunicationSpec as
+    (((KeyConfigure_Client, *) -> (KeyReporter_Web_Service, 80) on tcp) OR ((KeyConfigure_Client, *) -> (KeyReporter_Web_Service, 443) on tcp)) AND
+    (((KeyConfigure_Client, *) -> (Sassafras_Product_Recognition_Service_prs_sassafras_com, 80) on tcp) OR ((KeyConfigure_Client, *) -> (Sassafras_Product_Recognition_Service_prs_sassafras_com, 443) on tcp)) AND
+    (((KeyConfigure_Client, *) -> (Sassafras_Website_www_sassafras_com, 80) on tcp) OR ((KeyConfigure_Client, *) -> (Sassafras_Website_www_sassafras_com, 443) on tcp))
+
+def GeneralSpec as
+    PRS_Coherent_Communication_Spec? AND General_OpenStreetMapCommunicationSpec? AND General_KeyConfigureExternalCommunicationSpec
+
+def KeyServer_Inbound_Traffic_Spec as
+    ((KeyConfigure_Client, *) -> (KeyServer_Process_ks, 19283) on tcp, udp) AND
+    ((KeyShadow_Process, *) -> (KeyServer_Process_ks, 19283) on udp) AND
+    ((KeyReporter_Web_Service, *) -> (KeyServer_Process_ks, 19283) on tcp) AND
+    ((External_SQL_Reporting_Tool, *) -> (KeyServer_Process_ks, 19283) on tcp)
+
+def WebService_Browser_Access_Spec as
+    ((End_User_Web_Browser, *) -> (KeyReporter_Web_Service, 80) on tcp) OR
+    ((End_User_Web_Browser, *) -> (KeyReporter_Web_Service, 443) on tcp)
+
+def Ports_KeyShadowProcessPort19315Spec as
+    ((Sassafras_Client_KeyAccess, *) -> (KeyShadow_Process, 19315) on udp) AND
+    ((KeyConfigure_Client, *) -> (KeyShadow_Process, 19315) on udp)
+
+def Client_Connection_Direct_Spec as
+    ((Sassafras_Client_KeyAccess, *) -> (KeyServer_Process_ks, 19283) on tcp, udp)
+
+def Client_Connection_WebService_Spec as
+    ((Sassafras_Client_KeyAccess, *) -> (KeyReporter_Web_Service, 80) on tcp) OR
+    ((Sassafras_Client_KeyAccess, *) -> (KeyReporter_Web_Service, 443) on tcp)
+
+def Client_Connection_Method_Choice_Spec as
+    Client_Connection_Direct_Spec AND Client_Connection_WebService_Spec
+
+def Ports_KeyConfigureProcessSpec as
+    ((Sassafras_Client_KeyAccess, *) -> (KeyServer_Process_ks, 19283) on tcp, udp)
+
+def Ports_ksODBCSpec as
+    ((Sassafras_Client_KeyAccess, *) -> (KeyServer_Process_ks, 19283) on tcp, udp)
+
+def Ports_KeyReporterProcessSpec as
+    ((Sassafras_Client_KeyAccess, *) -> (KeyServer_Process_ks, 19283) on tcp, udp)
+
+def Ports_OptionalExternalandNotificationServicesSpec as
+    ((KeyServer_Process_ks, *) -> (SMTP_Mail_Server, 25) on tcp) AND
+    ((KeyShadow_Process, *) -> (SMTP_Mail_Server, 25) on tcp)
+
+def PortsSpec as
+    KeyServer_Inbound_Traffic_Spec AND
+    WebService_Browser_Access_Spec AND
+    Ports_KeyShadowProcessPort19315Spec AND
+    Client_Connection_Method_Choice_Spec AND
+    Ports_KeyConfigureProcessSpec AND
+    Ports_ksODBCSpec? AND
+    PRS_Coherent_Communication_Spec? AND
+    Ports_KeyReporterProcessSpec AND
+    Ports_OptionalExternalandNotificationServicesSpec?
+
+def FirewallSpecificationSpec as
+    GeneralSpec AND PortsSpec

@@ -1,0 +1,120 @@
+# Prices are USD. Verify against provider pricing pages before publishing final
+# cost numbers; provider pricing can change.
+providers:
+  gemini:
+    models:
+      gemini-3.1-pro-preview:
+        unit: per_1m_tokens
+        source: https://ai.google.dev/gemini-api/docs/pricing
+        notes:
+          - Standard paid tier for Gemini 3.1 Pro Preview.
+          - Output price includes thinking tokens.
+          - Grounding with Google Search has 5,000 prompts/month free across Gemini 3, then $14 / 1,000 search queries.
+          - The estimate applies the paid search rate to all reported billing units and does not track the free allowance.
+        tiers:
+          - name: standard_prompt_le_200k
+            max_input_tokens: 200000
+            rates:
+              input_tokens: 2.00
+              cached_input_tokens: 0.20
+              output_tokens: 12.00
+              reasoning_tokens: 12.00
+              search_queries: 0.014
+          - name: standard_prompt_gt_200k
+            min_input_tokens: 200001
+            rates:
+              input_tokens: 4.00
+              cached_input_tokens: 0.40
+              output_tokens: 18.00
+              reasoning_tokens: 18.00
+              search_queries: 0.014
+      gemini-2.5-pro:
+        unit: per_1m_tokens
+        source: https://ai.google.dev/gemini-api/docs/pricing
+        notes:
+          - Standard paid tier for Gemini 2.5 Pro.
+          - Output price includes thinking tokens.
+          - Grounding with Google Search has 1,500 RPD free, then $35 / 1,000 grounded prompts.
+          - The estimate applies the paid search rate to all reported billing units and does not track the free allowance.
+        tiers:
+          - name: standard_prompt_le_200k
+            max_input_tokens: 200000
+            rates:
+              input_tokens: 1.25
+              cached_input_tokens: 0.125
+              output_tokens: 10.00
+              reasoning_tokens: 10.00
+              search_queries: 0.035
+          - name: standard_prompt_gt_200k
+            min_input_tokens: 200001
+            rates:
+              input_tokens: 2.50
+              cached_input_tokens: 0.25
+              output_tokens: 15.00
+              reasoning_tokens: 15.00
+              search_queries: 0.035
+      gemini-2.5-flash:
+        unit: per_1m_tokens
+        source: https://ai.google.dev/gemini-api/docs/pricing
+        notes:
+          - Standard paid tier for Gemini 2.5 Flash, using text/image/video token rates.
+          - Output price includes thinking tokens.
+          - Audio token rates are not included because the translator workflow is text/document based.
+          - Grounding with Google Search has 1,500 RPD free, then $35 / 1,000 grounded prompts.
+          - The estimate applies the paid search rate to all reported billing units and does not track the free allowance.
+        rates:
+          input_tokens: 0.30
+          cached_input_tokens: 0.03
+          output_tokens: 2.50
+          reasoning_tokens: 2.50
+          search_queries: 0.035
+  openai:
+    models:
+      gpt-5:
+        unit: per_1m_tokens
+        source: https://developers.openai.com/api/docs/models/gpt-5
+        notes:
+          - Standard token pricing from the OpenAI model reference.
+          - Web search preview for reasoning models is listed on the current API pricing page at $10 / 1k calls.
+        rates:
+          input_tokens: 1.25
+          cached_input_tokens: 0.125
+          output_tokens: 10.00
+          reasoning_tokens: 0.0
+          search_queries: 0.01
+      gpt-5-mini:
+        unit: per_1m_tokens
+        source: https://developers.openai.com/api/docs/models/gpt-5-mini
+        notes:
+          - Standard token pricing from the OpenAI model reference.
+          - Web search preview for reasoning models is listed on the current API pricing page at $10 / 1k calls.
+        rates:
+          input_tokens: 0.25
+          cached_input_tokens: 0.025
+          output_tokens: 2.00
+          reasoning_tokens: 0.0
+          search_queries: 0.01
+      gpt-5.5:
+        unit: per_1m_tokens
+        source: https://developers.openai.com/api/docs/models/gpt-5.5
+        notes:
+          - Prompts over 272K input tokens use 2x input and 1.5x output pricing for the full session.
+          - Regional-processing price uplifts are not included.
+          - Web search is listed at $10 / 1k calls on the current API pricing page.
+        tiers:
+          - name: standard_prompt_le_272k
+            max_input_tokens: 272000
+            rates:
+              input_tokens: 5.00
+              cached_input_tokens: 0.50
+              output_tokens: 30.00
+              reasoning_tokens: 0.0
+              search_queries: 0.01
+          - name: standard_prompt_gt_272k
+            min_input_tokens: 272001
+            rates:
+              input_tokens: 10.00
+              cached_input_tokens: 1.00
+              output_tokens: 45.00
+              reasoning_tokens: 0.0
+              search_queries: 0.01

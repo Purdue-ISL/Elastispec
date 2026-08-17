@@ -1,0 +1,24 @@
+# Local runtime state
+runs/
+outputs/
+local_inputs/
+private_inputs/
+.venv/
+
+# Secrets
+.env
+*.env
+*api_key*
+*secret*
+
+# Raw or private-prone run artifacts
+*.log
+*.jsonl
+*.pdf
+*.sqlite
+*.db
+
+# Caches
+__pycache__/
+*.pyc
+.DS_Store

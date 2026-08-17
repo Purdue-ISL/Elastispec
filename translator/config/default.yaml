@@ -1,0 +1,17 @@
+app:
+  name: ExampleApp
+
+provider:
+  kind: gemini
+  model: gemini-3.1-pro-preview
+  api_key_env: GEMINI_API_KEY
+  web_search:
+    enabled: true
+
+loader:
+  kind: langchain
+  sources:
+    - https://example.com/vendor-documentation
+
+output:
+  run_dir: runs/default

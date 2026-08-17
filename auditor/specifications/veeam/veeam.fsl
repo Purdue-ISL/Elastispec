@@ -1,0 +1,159 @@
+def CommunicationBetweenVeeamBackup_ReplicationComponents_VeeamBackupServer_VeeamAgentComputerMicrosoftWindowsSpec as
+    ((Veeam_Backup_Server, *) -> (Veeam_Agent_Computer_Microsoft_Windows, 6184-6194) on tcp) AND
+    ((Veeam_Backup_Server, *) -> (Veeam_Agent_Computer_Microsoft_Windows, 135, 137-139, 445, 6160, 11731) on tcp, udp) AND
+    ((Veeam_Backup_Server, *) -> (Veeam_Agent_Computer_Microsoft_Windows, 6160, 11731) on tcp) AND
+    ((Veeam_Backup_Server, *) -> (Veeam_Agent_Computer_Microsoft_Windows, 6162) on tcp) AND
+    ((Veeam_Backup_Server, *) -> (Veeam_Agent_Computer_Microsoft_Windows, 2500-3300) on tcp) OR
+    ((Veeam_Backup_Server, *) -> (Veeam_Agent_Computer_Microsoft_Windows, 6167, 2500-3300) on tcp)
+
+def CommunicationBetweenVeeamBackup_ReplicationComponents_VeeamBackupServer_VeeamAgentComputerLinuxSpec as
+    ((Veeam_Backup_Server, *) -> (Veeam_Agent_Computer_Linux, 22) on tcp) AND
+    ((Veeam_Backup_Server, *) -> (Veeam_Agent_Computer_Linux, 6160, 6162) on tcp) AND
+    ((Veeam_Backup_Server, *) -> (Veeam_Agent_Computer_Linux, 6162) on tcp) AND
+    ((Veeam_Backup_Server, *) -> (Veeam_Agent_Computer_Linux, 2500-3300) on tcp)
+
+def CommunicationBetweenVeeamBackup_ReplicationComponents_VeeamBackupServer_VeeamAgentComputerUnixSpec as
+    ((Veeam_Backup_Server, *) -> (Veeam_Agent_Computer_Unix, 22) on tcp) AND
+    ((Veeam_Backup_Server, *) -> (Veeam_Agent_Computer_Unix, 2500-3300) on tcp)
+
+def CommunicationBetweenVeeamBackup_ReplicationComponents_VeeamBackupServer_DistributionServerSpec as
+    ((Veeam_Backup_Server, *) -> (Distribution_Server, 135, 137-139, 445, 6160, 11731) on tcp, udp) AND
+    ((Veeam_Backup_Server, *) -> (Distribution_Server, 49152-65535) on tcp) AND
+    ((Veeam_Backup_Server, *) -> (Distribution_Server, 9380) on tcp)
+
+def CommunicationBetweenVeeamBackup_ReplicationComponents_DistributionServer_VeeamAgentComputerMicrosoftWindowsSpec as
+    ((Distribution_Server, *) -> (Veeam_Agent_Computer_Microsoft_Windows, 49152-65535) on tcp) AND
+    ((Distribution_Server, *) -> (Veeam_Agent_Computer_Microsoft_Windows, 6160, 11731) on tcp, udp)
+
+def CommunicationBetweenVeeamBackup_ReplicationComponents_DistributionServer_VeeamAgentComputerLinuxSpec as
+    ((Distribution_Server, *) -> (Veeam_Agent_Computer_Linux, 22) on tcp) AND
+    ((Distribution_Server, *) -> (Veeam_Agent_Computer_Linux, 6160, 6162) on tcp)
+
+def CommunicationBetweenVeeamBackup_ReplicationComponents_DistributionServer_VeeamAgentComputerUnixSpec as
+    ((Distribution_Server, *) -> (Veeam_Agent_Computer_Unix, 22) on tcp)
+
+def CommunicationBetweenVeeamBackup_ReplicationComponents_VeeamAgentComputerMicrosoftWindows_VeeamBackupServerSpec as
+    ((Veeam_Agent_Computer_Microsoft_Windows, *) -> (Veeam_Backup_Server, 10005) on tcp) AND
+    ((Veeam_Agent_Computer_Microsoft_Windows, *) -> (Veeam_Backup_Server, 10001) on tcp) AND
+    ((Veeam_Agent_Computer_Microsoft_Windows, *) -> (Veeam_Backup_Server, 2500-3300) on tcp)
+
+def CommunicationBetweenVeeamBackup_ReplicationComponents_VeeamAgentComputerLinux_VeeamBackupServerSpec as
+    ((Veeam_Agent_Computer_Linux, *) -> (Veeam_Backup_Server, 10006) on tcp) OR
+    ((Veeam_Agent_Computer_Linux, *) -> (Veeam_Backup_Server, 10002) on tcp)
+
+def CommunicationBetweenVeeamBackup_ReplicationComponents_VeeamAgentComputerUnix_macOS_VeeamBackupServerSpec as
+    ((Veeam_Agent_Computer_Unix_macOS, *) -> (Veeam_Backup_Server, 10006) on tcp)
+
+def CommunicationBetweenVeeamBackupAndReplicationComponentsSpec as
+    CommunicationBetweenVeeamBackup_ReplicationComponents_VeeamBackupServer_VeeamAgentComputerMicrosoftWindowsSpec? AND
+    CommunicationBetweenVeeamBackup_ReplicationComponents_VeeamBackupServer_VeeamAgentComputerLinuxSpec? AND
+    CommunicationBetweenVeeamBackup_ReplicationComponents_VeeamBackupServer_VeeamAgentComputerUnixSpec? AND
+    CommunicationBetweenVeeamBackup_ReplicationComponents_VeeamBackupServer_DistributionServerSpec? AND
+    CommunicationBetweenVeeamBackup_ReplicationComponents_DistributionServer_VeeamAgentComputerMicrosoftWindowsSpec? AND
+    CommunicationBetweenVeeamBackup_ReplicationComponents_DistributionServer_VeeamAgentComputerLinuxSpec? AND
+    CommunicationBetweenVeeamBackup_ReplicationComponents_DistributionServer_VeeamAgentComputerUnixSpec? AND
+    CommunicationBetweenVeeamBackup_ReplicationComponents_VeeamAgentComputerMicrosoftWindows_VeeamBackupServerSpec? AND
+    CommunicationBetweenVeeamBackup_ReplicationComponents_VeeamAgentComputerLinux_VeeamBackupServerSpec? AND
+    CommunicationBetweenVeeamBackup_ReplicationComponents_VeeamAgentComputerUnix_macOS_VeeamBackupServerSpec?
+
+def CommunicationBetweenVeeamAgentComponents_VeeamAgentComputerMicrosoftWindows_VeeamAgentComputerMicrosoftWindowsSpec as
+    ((Veeam_Agent_Computer_Microsoft_Windows, *) -> (Veeam_Agent_Computer_Microsoft_Windows, 9395, 6183) on tcp)
+
+def CommunicationBetweenVeeamAgentComponents_VeeamAgentComputerLinux_Unix_macOS_VeeamAgentComputerLinux_Unix_macOSSpec as
+    ((Veeam_Agent_Computer_Linux_Unix_macOS, *) -> (Veeam_Agent_Computer_Linux_Unix_macOS, 2500-3300) on tcp)
+
+def CommunicationBetweenVeeamAgentComponentsSpec as
+    CommunicationBetweenVeeamAgentComponents_VeeamAgentComputerMicrosoftWindows_VeeamAgentComputerMicrosoftWindowsSpec? AND
+    CommunicationBetweenVeeamAgentComponents_VeeamAgentComputerLinux_Unix_macOS_VeeamAgentComputerLinux_Unix_macOSSpec?
+
+def CommunicationwithVeeamBackupRepositories_VeeamAgentComputer_LinuxserverperformingtheroleofabackuprepositorySpec as
+    ((Veeam_Agent_Computer, *) -> (Linux_server_performing_the_role_of_a_backup_repository, 2500-3300) on tcp)
+
+def CommunicationwithVeeamBackupRepositories_VeeamAgentComputer_MicrosoftWindowsserverperformingtheroleofabackuprepositorySpec as
+    ((Veeam_Agent_Computer, *) -> (Microsoft_Windows_server_performing_the_role_of_a_backup_repository, 49152-65535) on tcp) AND
+    ((Veeam_Agent_Computer, *) -> (Microsoft_Windows_server_performing_the_role_of_a_backup_repository, 2500-3300) on tcp)
+
+def CommunicationwithVeeamBackupRepositories_VeeamAgentComputer_SharedfolderSMBCIFSshareSpec as
+    ((Veeam_Agent_Computer, *) -> (Shared_folder_SMB_CIFS_share, 137-139, 445) on tcp, udp)
+
+def CommunicationwithVeeamBackupRepositories_VeeamAgentComputer_GatewayMicrosoftWindowsserverSpec as
+    ((Veeam_Agent_Computer, *) -> (Gateway_Microsoft_Windows_server, 137-139, 445) on tcp, udp) AND
+    ((Veeam_Agent_Computer, *) -> (Gateway_Microsoft_Windows_server, 49152-65535) on tcp) AND
+    ((Veeam_Agent_Computer, *) -> (Gateway_Microsoft_Windows_server, 2500-3300) on tcp)
+
+def CommunicationWithVeeamBackupRepositoriesSpec as
+    CommunicationwithVeeamBackupRepositories_VeeamAgentComputer_LinuxserverperformingtheroleofabackuprepositorySpec? AND
+    CommunicationwithVeeamBackupRepositories_VeeamAgentComputer_MicrosoftWindowsserverperformingtheroleofabackuprepositorySpec? AND
+    CommunicationwithVeeamBackupRepositories_VeeamAgentComputer_SharedfolderSMBCIFSshareSpec? AND
+    CommunicationwithVeeamBackupRepositories_VeeamAgentComputer_GatewayMicrosoftWindowsserverSpec?
+
+def CommunicationwithVeeamCloudConnectRepositories_VeeamAgentComputerMicrosoftWindows_Linux_macOS_CloudgatewaySpec as
+    ((Veeam_Agent_Computer_Microsoft_Windows_Linux_macOS, *) -> (Cloud_gateway, 6180) on tcp) AND
+    ((Veeam_Agent_Computer_Microsoft_Windows_Linux_macOS, *) -> (Certificate_Revocation_Lists, 80, 443) on tcp)
+
+def CommunicationwithVeeamCloudConnectRepositories_VeeamAgentComputerMicrosoftWindows_Linux_macOS_CertificateRevocationListsSpec as
+    ((Veeam_Agent_Computer_Microsoft_Windows_Linux_macOS, *) -> (Certificate_Revocation_Lists, 80, 443) on tcp)
+
+def CommunicationWithVeeamCloudConnectRepositoriesSpec as
+    CommunicationwithVeeamCloudConnectRepositories_VeeamAgentComputerMicrosoftWindows_Linux_macOS_CloudgatewaySpec AND
+    CommunicationwithVeeamCloudConnectRepositories_VeeamAgentComputerMicrosoftWindows_Linux_macOS_CertificateRevocationListsSpec
+
+def CommunicationwithObjectStorage_Gatewayserverorbackupserver_AmazonS3objectstorageSpec as
+    ((Gateway_server_or_backup_server, *) -> (Amazon_S3_object_storage, 443) on tcp) AND ((Gateway_server_or_backup_server, *) -> (Amazon_S3_object_storage, 80) on tcp)
+
+def CommunicationwithObjectStorage_Gatewayserverorbackupserver_MicrosoftAzureobjectstorageSpec as
+    ((Gateway_server_or_backup_server, *) -> (Microsoft_Azure_object_storage, 443) on tcp) AND
+    ((Gateway_server_or_backup_server, *) -> (Microsoft_Azure_object_storage, 80) on tcp)
+
+def CommunicationwithObjectStorage_Gatewayserverorbackupserver_GoogleCloudstorageSpec as
+    ((Gateway_server_or_backup_server, *) -> (Google_Cloud_storage, 443) on tcp) AND
+    ((Gateway_server_or_backup_server, *) -> (Google_Cloud_storage, 80) on tcp)
+
+def CommunicationwithObjectStorage_Gatewayserverorbackupserver_IBMCloudobjectstorageSpec as
+    ((Gateway_server_or_backup_server, *) -> (IBM_Cloud_object_storage, *) on tcp)
+
+def CommunicationwithObjectStorage_Gatewayserverorbackupserver_S3compatibleobjectstorageSpec as
+    ((Gateway_server_or_backup_server, *) -> (S3_compatible_object_storage, *) on tcp)
+
+def CommunicationwithObjectStorage_Gatewayserverorbackupserver_VeeamDataCloudVaultstorageSpec as
+    ((Gateway_server_or_backup_server, *) -> (Veeam_Data_Cloud_Vault_storage, 443) on tcp)
+
+def CommunicationWithObjectStorageSpec as
+    CommunicationwithObjectStorage_Gatewayserverorbackupserver_AmazonS3objectstorageSpec? AND
+    CommunicationwithObjectStorage_Gatewayserverorbackupserver_MicrosoftAzureobjectstorageSpec? AND
+    CommunicationwithObjectStorage_Gatewayserverorbackupserver_GoogleCloudstorageSpec? AND
+    CommunicationwithObjectStorage_Gatewayserverorbackupserver_IBMCloudobjectstorageSpec? AND
+    CommunicationwithObjectStorage_Gatewayserverorbackupserver_S3compatibleobjectstorageSpec? AND
+    CommunicationwithObjectStorage_Gatewayserverorbackupserver_VeeamDataCloudVaultstorageSpec?
+
+def CommunicationwithCloudMachines_VeeamBackup_Replication_AmazonEC2instancewithVeeamAgent_AmazoncloudSpec as
+    ((Veeam_Backup_Replication_Amazon_EC2_instance_with_Veeam_Agent, *) -> (Amazon_cloud, 443) on tcp) AND
+    ((Veeam_Backup_Replication_Amazon_EC2_instance_with_Veeam_Agent, *) -> (Amazon_cloud, 80) on tcp)
+
+def CommunicationwithCloudMachines_VeeamBackup_Replication_MicrosoftAzurevirtualmachinewithVeeamAgent_MicrosoftAzurecloudSpec as
+    ((Veeam_Backup_Replication_Microsoft_Azure_virtual_machine_with_Veeam_Agent, *) -> (Microsoft_Azure_cloud, 443) on tcp) AND
+    ((Veeam_Backup_Replication_Microsoft_Azure_virtual_machine_with_Veeam_Agent, *) -> (Microsoft_Azure_cloud, 80) on tcp)
+
+def CommunicationWithCloudMachinesSpec as
+    CommunicationwithCloudMachines_VeeamBackup_Replication_AmazonEC2instancewithVeeamAgent_AmazoncloudSpec? AND
+    CommunicationwithCloudMachines_VeeamBackup_Replication_MicrosoftAzurevirtualmachinewithVeeamAgent_MicrosoftAzurecloudSpec?
+
+def Communicationwith3rdPartyComponents_Backupserver_MicrosoftActiveDirectorySpec as
+    (((Backup_server, *) -> (Microsoft_Active_Directory, 389) on tcp, udp) OR
+    ((Backup_server, *) -> (Microsoft_Active_Directory, 636) on tcp))
+
+def Communicationwith3rdPartyComponents_Backupserver_DNSserverwithforward_reversenameresolutionofallbackupserversSpec as
+    ((Backup_server, *) -> (DNS_server_with_forward_reverse_name_resolution_of_all_backup_servers, 53) on tcp, udp)
+
+def CommunicationWith3rdPartyComponentsSpec as
+    Communicationwith3rdPartyComponents_Backupserver_MicrosoftActiveDirectorySpec? AND
+    Communicationwith3rdPartyComponents_Backupserver_DNSserverwithforward_reversenameresolutionofallbackupserversSpec
+
+def VeeamFirewallSpec as
+    CommunicationBetweenVeeamBackupAndReplicationComponentsSpec AND
+    CommunicationBetweenVeeamAgentComponentsSpec AND
+    CommunicationWithVeeamBackupRepositoriesSpec AND
+    CommunicationWithVeeamCloudConnectRepositoriesSpec? AND
+    CommunicationWithObjectStorageSpec? AND
+    CommunicationWithCloudMachinesSpec? AND
+    CommunicationWith3rdPartyComponentsSpec

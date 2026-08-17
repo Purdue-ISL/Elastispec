@@ -1,0 +1,82 @@
+hostname toy-papercut-fw
+!
+! ============================================================================
+! Toy firewall configuration for the Elastispec Auditor tutorial.
+! Standard Cisco IOS: the config is self-contained (interfaces, ACLs, and
+! bindings are all defined here), so build_snapshot.py copies it verbatim.
+!
+! Topology:
+!   10.10.20.0/24   ECE client subnet (campus)          - Gi0/0
+!   10.10.30.0/24   CS client subnet (campus)           - Gi0/1
+!   172.16.10.0/24  Server subnet                       - Gi0/2
+!                     172.16.10.2-.3 = two-node server pool; each node runs
+!                                      both the PaperCut Application Server
+!                                      and the Mobility Print Server
+!   172.16.20.0/24  Data-center subnet                  - Gi0/3
+!                     172.16.20.40 = PostgreSQL database
+!   203.0.113.0/24  External-services test network      - Gi0/4
+!
+! Security policy:
+! - Client and web interfaces carry no ACLs at all (campus traffic is
+!   unrestricted, nothing is filtered toward campus or web).
+! - The two protected interfaces (servers, data center) each carry an ACL
+!   pair:
+!     "out" governs traffic INTO the zone: destination-side enforcement,
+!           everything not explicitly permitted is dropped;
+!     "in"  governs the zone's own OUTBOUND traffic: permit ip any any
+!           (allow-all outbound).
+! ============================================================================
+!
+interface GigabitEthernet0/0
+ description ECE client subnet (campus)
+ ip address 10.10.20.1 255.255.255.0
+!
+interface GigabitEthernet0/1
+ description CS client subnet (campus)
+ ip address 10.10.30.1 255.255.255.0
+!
+interface GigabitEthernet0/2
+ description Server subnet (PaperCut app + Mobility Print pool at .2-.3)
+ ip address 172.16.10.1 255.255.255.0
+ ip access-group TO-SERVERS out
+ ip access-group SERVERS-OUTBOUND in
+!
+interface GigabitEthernet0/3
+ description Data-center subnet (PostgreSQL at .40)
+ ip address 172.16.20.1 255.255.255.0
+ ip access-group TO-DATACENTER out
+ ip access-group DATACENTER-OUTBOUND in
+!
+interface GigabitEthernet0/4
+ description External-services test network
+ ip address 203.0.113.1 255.255.255.0
+!
+! What may reach the servers. The server pool is 172.16.10.2-.3 (wildcard
+! 172.16.10.2 0.0.0.1). One quarantined ECE client (10.10.20.66) is denied
+! everything first. Then campus (10.0.0.0/8) sources may use the embedded
+! MFD integration ports (9191/9192/9193/10389 + SNMP trap 162) and the
+! Mobility Print printing ports (9163/9164). udp/5353 (mDNS) and tcp+udp/53
+! (DNS) are deliberately NOT opened, so those printer-discovery options
+! cannot be satisfied. Everything else hits the implicit deny.
+ip access-list extended TO-SERVERS
+ deny ip host 10.10.20.66 172.16.10.2 0.0.0.1
+ permit tcp 10.0.0.0 0.255.255.255 172.16.10.2 0.0.0.1 eq 9191
+ permit tcp 10.0.0.0 0.255.255.255 172.16.10.2 0.0.0.1 eq 9192
+ permit tcp 10.0.0.0 0.255.255.255 172.16.10.2 0.0.0.1 eq 9193
+ permit tcp 10.0.0.0 0.255.255.255 172.16.10.2 0.0.0.1 eq 10389
+ permit udp 10.0.0.0 0.255.255.255 172.16.10.2 0.0.0.1 eq 162
+ permit tcp 10.0.0.0 0.255.255.255 172.16.10.2 0.0.0.1 eq 9163
+ permit tcp 10.0.0.0 0.255.255.255 172.16.10.2 0.0.0.1 eq 9164
+!
+! Only the application-server subnet may reach the PostgreSQL database.
+ip access-list extended TO-DATACENTER
+ permit tcp 172.16.10.0 0.0.0.255 host 172.16.20.40 eq 5432
+!
+! The protected zones' own outbound traffic: allow-all.
+ip access-list extended SERVERS-OUTBOUND
+ permit ip any any
+!
+ip access-list extended DATACENTER-OUTBOUND
+ permit ip any any
+!
+end

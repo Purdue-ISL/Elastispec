@@ -1,0 +1,27 @@
+def GeoEventServer_HTTP_Mode_Spec as
+    ((Intranet, *) -> (ArcGIS_GeoEvent_Server, 6180) on tcp)
+
+def GeoEventServer_HTTPS_Mode_Spec as
+    ((Intranet, *) -> (ArcGIS_GeoEvent_Server, 6143) on tcp)
+
+def GeoEventServer_CommunicationMode_Choice_Spec as
+    (GeoEventServer_HTTP_Mode_Spec OR GeoEventServer_HTTPS_Mode_Spec)
+
+def PortsusedbyArcGISGeoEventServer_ZooKeeperServicePortsSpec as
+    ((Intranet, *) -> (ArcGIS_GeoEvent_Server, 4181, 4182, 4190) on tcp)
+
+def PortsusedbyArcGISGeoEventServer_KafkaServicePortsSpec as
+    ((Intranet, *) -> (ArcGIS_GeoEvent_Server, 9191, 9192, 9193, 9194) on tcp)
+
+def PortsusedbyArcGISGeoEventServer_SpatiotemporalBigDataStorePortsSpec as
+    ((ArcGIS_GeoEvent_Server, *) -> (Spatiotemporal_Big_Data_Store, 9220) on tcp) AND ((ArcGIS_GeoEvent_Server, *) -> (Spatiotemporal_Big_Data_Store, 9320) on tcp)
+
+def PortsusedbyArcGISGeoEventServer_TCPSocketConnectorPortsSpec as
+    ((External_TCP_Client, *) -> (ArcGIS_GeoEvent_Server, 5565) on tcp) OR ((ArcGIS_GeoEvent_Server, *) -> (External_TCP_Server, 5575) on tcp)
+
+def PortsusedbyArcGISGeoEventServerSpec as
+    GeoEventServer_CommunicationMode_Choice_Spec AND
+    PortsusedbyArcGISGeoEventServer_ZooKeeperServicePortsSpec? AND
+    PortsusedbyArcGISGeoEventServer_KafkaServicePortsSpec? AND
+    PortsusedbyArcGISGeoEventServer_SpatiotemporalBigDataStorePortsSpec? AND
+    PortsusedbyArcGISGeoEventServer_TCPSocketConnectorPortsSpec?

@@ -1,0 +1,18 @@
+def EZproxyProxyByHostnameCoreFunctionalitySpec as
+    ((End_User, *) -> (EZProxy_Server, 80) on tcp) AND
+    ((EZProxy_Server, *) -> (Upstream_Content_Provider, 80, 443) on tcp)
+
+def HowmanyportsdoesEZproxyusewithProxybyhostname_PortsUsedinProxybyHostnameConfiguration_HTTPSProcessingPortOptionalSpec as
+    ((End_User, *) -> (EZProxy_Server, 443) on tcp)?
+
+def HowmanyportsdoesEZproxyusewithProxybyhostname_PortsUsedinProxybyHostnameConfiguration_LegacyURLPortOptionalSpec as
+    ((End_User, *) -> (EZProxy_Server, 2048) on tcp)?
+
+def HowmanyportsdoesEZproxyusewithProxybyhostname_PortsUsedinProxybyHostnameConfigurationSpec as
+    EZproxyProxyByHostnameCoreFunctionalitySpec AND
+    HowmanyportsdoesEZproxyusewithProxybyhostname_PortsUsedinProxybyHostnameConfiguration_HTTPSProcessingPortOptionalSpec AND
+    HowmanyportsdoesEZproxyusewithProxybyhostname_PortsUsedinProxybyHostnameConfiguration_LegacyURLPortOptionalSpec
+
+def HowmanyportsdoesEZproxyusewithProxybyhostnameSpec as
+    HowmanyportsdoesEZproxyusewithProxybyhostname_PortsUsedinProxybyHostnameConfigurationSpec AND
+    EZproxyProxyByHostnameCoreFunctionalitySpec

@@ -1,0 +1,16 @@
+{
+  "PaperCut_Application_Server": {"host_ip": ["172.16.10.2", "172.16.10.3"]},
+  "Mobility_Print_Server": {"host_ip": ["172.16.10.2", "172.16.10.3"]},
+  "PostgreSQL_Database": {"host_ip": ["172.16.20.40"]},
+
+  "Mobility_Print_Update_Services": {"host_ip": ["web"]},
+  "PaperCut_Content_Delivery_Network": {"host_ip": ["web"]},
+  "PaperCut_Client_Download_Services": {"host_ip": ["web"]},
+  "Mobility_Print_Cloud_Services": {"host_ip": ["web"]},
+  "Twilio_STUN_TURN_Services": {"host_ip": ["web"]},
+
+  "Oracle_Database": {"host_ip": ["N/A"]},
+  "Microsoft_SQL_Server": {"host_ip": ["N/A"]},
+  "Microsoft_SQL_Server_Express": {"host_ip": ["N/A"]},
+  "MySQL_Database": {"host_ip": ["N/A"]}
+}

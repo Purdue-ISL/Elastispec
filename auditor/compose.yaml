@@ -1,0 +1,56 @@
+name: elastispec-auditor
+
+services:
+  batfish:
+    image: qing0/elastispec-batfish:sigcomm2026
+    platform: linux/amd64
+    expose:
+      - "9996"
+      - "9997"
+    volumes:
+      - batfish-data:/data
+
+  auditor:
+    image: qing0/elastispec-auditor:sigcomm2026
+    platform: linux/amd64
+    depends_on:
+      - batfish
+    volumes:
+      - type: bind
+        source: ${ELASTISPEC_AUDITOR_CONFIG:-./examples/papercut_toy/toy_firewall_config.txt}
+        target: /inputs/firewall.cfg
+        read_only: true
+      - type: bind
+        source: ${ELASTISPEC_AUDITOR_INVENTORY:-./examples/papercut_toy/inventory.json}
+        target: /inputs/inventory.json
+        read_only: true
+      - type: bind
+        source: ${ELASTISPEC_AUDITOR_SPEC:-./examples/papercut_toy/papercut_toy.fsl}
+        target: /inputs/policy.fsl
+        read_only: true
+      - type: bind
+        source: ${ELASTISPEC_AUDITOR_OUTPUT_DIR:-./output}
+        target: /outputs
+      - type: volume
+        source: batfish-data
+        target: /batfish-data
+    command:
+      - --config
+      - /inputs/firewall.cfg
+      - --inventory
+      - /inputs/inventory.json
+      - --spec
+      - /inputs/policy.fsl
+      - --output
+      - /outputs/${ELASTISPEC_AUDITOR_OUTPUT_NAME:-docker_audit.html}
+      - --title
+      - ${ELASTISPEC_AUDITOR_TITLE:-Elastispec firewall audit}
+      - --batfish_host
+      - batfish
+      - --batfish_data_dir
+      - /batfish-data
+      - --batfish_startup_timeout
+      - "120"
+
+volumes:
+  batfish-data:

@@ -1,0 +1,7 @@
+google-genai
+openai
+langchain-community
+langchain-docling
+pypdf
+pydantic
+PyYAML

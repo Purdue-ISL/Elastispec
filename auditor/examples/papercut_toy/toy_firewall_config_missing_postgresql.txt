@@ -1,0 +1,48 @@
+hostname toy-papercut-fw
+!
+! PaperCut toy configuration with the required PostgreSQL rule omitted.
+! This file is used by the tutorial's hands-on experiment.
+!
+interface GigabitEthernet0/0
+ description ECE client subnet (campus)
+ ip address 10.10.20.1 255.255.255.0
+!
+interface GigabitEthernet0/1
+ description CS client subnet (campus)
+ ip address 10.10.30.1 255.255.255.0
+!
+interface GigabitEthernet0/2
+ description Server subnet (PaperCut app + Mobility Print pool at .2-.3)
+ ip address 172.16.10.1 255.255.255.0
+ ip access-group TO-SERVERS out
+ ip access-group SERVERS-OUTBOUND in
+!
+interface GigabitEthernet0/3
+ description Data-center subnet (PostgreSQL at .40)
+ ip address 172.16.20.1 255.255.255.0
+ ip access-group TO-DATACENTER out
+ ip access-group DATACENTER-OUTBOUND in
+!
+interface GigabitEthernet0/4
+ description External-services test network
+ ip address 203.0.113.1 255.255.255.0
+!
+ip access-list extended TO-SERVERS
+ deny ip host 10.10.20.66 172.16.10.2 0.0.0.1
+ permit tcp 10.0.0.0 0.255.255.255 172.16.10.2 0.0.0.1 eq 9191
+ permit tcp 10.0.0.0 0.255.255.255 172.16.10.2 0.0.0.1 eq 9192
+ permit tcp 10.0.0.0 0.255.255.255 172.16.10.2 0.0.0.1 eq 9193
+ permit tcp 10.0.0.0 0.255.255.255 172.16.10.2 0.0.0.1 eq 10389
+ permit udp 10.0.0.0 0.255.255.255 172.16.10.2 0.0.0.1 eq 162
+ permit tcp 10.0.0.0 0.255.255.255 172.16.10.2 0.0.0.1 eq 9163
+ permit tcp 10.0.0.0 0.255.255.255 172.16.10.2 0.0.0.1 eq 9164
+!
+ip access-list extended TO-DATACENTER
+!
+ip access-list extended SERVERS-OUTBOUND
+ permit ip any any
+!
+ip access-list extended DATACENTER-OUTBOUND
+ permit ip any any
+!
+end

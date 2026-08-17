@@ -1,0 +1,18 @@
+{
+  "HP_Jetdirect": {},
+  "HP_Web_Jetadmin": {},
+  "HP_Embedded_Web_Server": {},
+  "External_Web_Servers": {},
+  "Managed_Printer_Device": {},
+  "HPWSProAdapter": {},
+  "HP_MFP_Device": {},
+  "Remote_Microsoft_SQL_Server": {},
+  "HP_Security_Manager": {},
+  "Newer_HP_Device": {},
+  "HP_Web_Jetadmin_Client": {},
+  "HP_Web_Services_Capable_Devices": {},
+  "Non_Web_Services_Capable_Device": {},
+  "HP_Open_Extensibility_Platform_Device": {},
+  "Host_with_HP_Web_Jetadmin_Software": {},
+  "PC_without_HP_Proxy_Agent": {}
+}

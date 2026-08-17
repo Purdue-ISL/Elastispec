@@ -1,0 +1,81 @@
+def ExternalDatabaseSpec as
+    ((PaperCut_Application_Server, *) -> (Oracle_Database, 1521) on tcp) OR
+    ((PaperCut_Application_Server, *) -> (Microsoft_SQL_Server, 1433) on tcp) OR
+    ((PaperCut_Application_Server, *) -> (Microsoft_SQL_Server_Express, 1450) on tcp) OR
+    ((PaperCut_Application_Server, *) -> (MySQL_Database, 3306) on tcp) OR
+    ((PaperCut_Application_Server, *) -> (PostgreSQL_Database, 5432) on tcp)
+
+def MobilityPrintFirewallRules_Auto_updateSpec as
+    ((Mobility_Print_Server, *) -> (Mobility_Print_Update_Services, 443) on tcp) AND
+    ((Mobility_Print_Server, *) -> (PaperCut_Content_Delivery_Network, 443) on tcp)
+
+def MobilityPrintFirewallRules_mDNSPrinterDiscoverySpec as
+    ((PaperCut_Clients, *) -> (Mobility_Print_Server, 5353) on udp) AND
+    ((PaperCut_Clients, *) -> (Mobility_Print_Server, 9164) on tcp) AND
+    ((PaperCut_Clients, *) -> (Mobility_Print_Server, 9163) on tcp)
+
+def MobilityPrintFirewallRules_KnownHostPrinterDiscoverySpec as
+    ((Mobility_Print_Server, *) -> (PaperCut_Client_Download_Services, 443) on tcp) AND
+    ((PaperCut_Clients, *) -> (Mobility_Print_Server, 9163) on tcp) AND
+    ((PaperCut_Clients, *) -> (Mobility_Print_Server, 9164) on tcp)
+
+def MobilityPrintFirewallRules_DNSPrinterDiscoverySpec as
+    ((Local_DNS_Server, *) -> (Mobility_Print_Server, 53) on tcp, udp) AND
+    ((PaperCut_Clients, *) -> (Mobility_Print_Server, 9163) on tcp) AND
+    ((PaperCut_Clients, *) -> (Mobility_Print_Server, 9164) on tcp)
+
+def MobilityPrintFirewallRules_CloudPrintPrinterDiscoverySpec as
+    ((Mobility_Print_Server, *) -> (Mobility_Print_Cloud_Services, 443) on tcp) AND
+    ((Mobility_Print_Server, *) -> (Twilio_STUN_TURN_Services, 3478) on tcp, udp) AND
+    ((Mobility_Print_Server, *) -> (Twilio_STUN_TURN_Services, 443, 3478) on tcp, udp)
+
+def MobilityPrintFirewallRulesSpec as
+    MobilityPrintFirewallRules_Auto_updateSpec AND
+    (MobilityPrintFirewallRules_mDNSPrinterDiscoverySpec OR
+    MobilityPrintFirewallRules_KnownHostPrinterDiscoverySpec OR
+    MobilityPrintFirewallRules_DNSPrinterDiscoverySpec OR
+    MobilityPrintFirewallRules_CloudPrintPrinterDiscoverySpec)
+
+def Multi_FunctionDeviceIntegration_HPSpec as
+    ((HP_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) AND
+    ((HP_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp) AND
+    ((HP_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9193) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (HP_Multi_Function_Device, 7627) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (HP_Multi_Function_Device, 80) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (HP_Multi_Function_Device, 443) on tcp)
+
+def Toshiba_SDK1_Spec as
+    (((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) OR
+    ((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp)) AND
+    (((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 10389) on tcp) OR
+    ((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 10636) on tcp)) AND
+    (((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 162) on udp) AND
+    ((PaperCut_Application_Server, *) -> (Toshiba_Multi_Function_Device, 161) on udp))
+
+def Toshiba_SDK2_Spec as
+    (((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) OR
+    ((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp)) AND
+    (((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 10389) on tcp) OR
+    ((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 10636) on tcp)) AND
+    (((PaperCut_Application_Server, *) -> (Toshiba_Multi_Function_Device, 49629) on tcp) OR
+    ((PaperCut_Application_Server, *) -> (Toshiba_Multi_Function_Device, 49630) on tcp))
+
+def Toshiba_SDK3_RD30_Spec as
+    (((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) OR
+    ((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp)) AND
+    (((PaperCut_Application_Server, *) -> (Toshiba_Multi_Function_Device, 49629) on tcp) OR
+    ((PaperCut_Application_Server, *) -> (Toshiba_Multi_Function_Device, 49630) on tcp)) AND
+    ((PaperCut_Application_Server, *) -> (Toshiba_Multi_Function_Device, 50083) on tcp)
+
+def Multi_FunctionDeviceIntegration_Toshiba_SDK_Choice_Spec as
+    (Toshiba_SDK1_Spec OR Toshiba_SDK2_Spec OR Toshiba_SDK3_RD30_Spec)
+
+def Multi_FunctionDeviceIntegrationSpec as
+    Multi_FunctionDeviceIntegration_HPSpec OR
+    Multi_FunctionDeviceIntegration_Toshiba_SDK_Choice_Spec
+
+def PaperCutToyFirewallSpec as
+    MobilityPrintFirewallRulesSpec AND
+    Multi_FunctionDeviceIntegrationSpec AND
+    ExternalDatabaseSpec AND
+    CardReadersSpec?

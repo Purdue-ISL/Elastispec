@@ -1,0 +1,19 @@
+def AUT1238DialogForBothServiceManagersSpec as
+    ((AUT1238_Service_Manager_Dialog, *) -> (AUT1238_Service_Manager, 8871) on tcp) AND
+    ((AUT1238_Service_Manager_Dialog, *) -> (AUT2102_Service_Manager, 8872) on tcp)
+
+def AUT2102DialogForBothServiceManagersSpec as
+    ((AUT2102_Service_Manager_Dialog, *) -> (AUT1238_Service_Manager, 8871) on tcp) AND
+    ((AUT2102_Service_Manager_Dialog, *) -> (AUT2102_Service_Manager, 8872) on tcp)
+
+def SingleServiceManagerDialogSpec as
+    AUT1238DialogForBothServiceManagersSpec OR
+    AUT2102DialogForBothServiceManagersSpec
+
+def VersionSpecificServiceManagerDialogsSpec as
+    ((AUT1238_Service_Manager_Dialog, *) -> (AUT1238_Service_Manager, 8871) on tcp) AND
+    ((AUT2102_Service_Manager_Dialog, *) -> (AUT2102_Service_Manager, 8872) on tcp)
+
+def SettingupMultipleServiceManagersonasingleserverSpec as
+    SingleServiceManagerDialogSpec OR
+    VersionSpecificServiceManagerDialogsSpec

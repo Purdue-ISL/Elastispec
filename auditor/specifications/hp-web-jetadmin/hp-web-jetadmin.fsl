@@ -1,0 +1,106 @@
+def PortsHPWebJetadminuses_TFTPIncomingPortSpec as
+    ((HP_Jetdirect, *) -> (HP_Web_Jetadmin, 69) on udp)
+
+def PortsHPWebJetadminuses_HTTPforEWSandFirmwareRetrievalSpec as
+    ((HP_Web_Jetadmin, *) -> (HP_Embedded_Web_Server, 80) on tcp) AND
+    ((HP_Web_Jetadmin, *) -> (External_Web_Servers, 80) on tcp)
+
+def PortsHPWebJetadminuses_SNMPSpec as
+    ((HP_Web_Jetadmin, *) -> (Managed_Printer_Device, 161) on udp)
+
+def PortsHPWebJetadminuses_SLPListenSpec as
+    ((Managed_Printer_Device, *) -> (HP_Web_Jetadmin, 427) on udp)
+
+def PortsHPWebJetadminuses_HTTPSforDeviceConfigurationSpec as
+    ((HP_Web_Jetadmin, *) -> (Managed_Printer_Device, 443) on tcp) OR
+    ((HPWSProAdapter, *) -> (Managed_Printer_Device, 443) on tcp)
+
+def PortsHPWebJetadminuses_ConfigurationforHPMFPDevicesSpec as
+    ((HP_Web_Jetadmin, *) -> (HP_MFP_Device, 843) on tcp)
+
+def PortsHPWebJetadminuses_MicrosoftSQLServerSpec as
+    ((HP_Web_Jetadmin, *) -> (Remote_Microsoft_SQL_Server, 1433) on tcp) AND
+    ((HP_Web_Jetadmin, *) -> (Remote_Microsoft_SQL_Server, 59113) on tcp)
+
+def PortsHPWebJetadminuses_BuildMonitorSpec as
+    ((HP_Web_Jetadmin, *) -> (HP_Web_Jetadmin, 2493) on udp)
+
+def PortsHPWebJetadminuses_HPSecurityManagerDeviceAnnouncementsSpec as
+    ((HP_Security_Manager, *) -> (HP_Web_Jetadmin, 3329) on tcp)
+
+def PortsHPWebJetadminuses_WSDiscoverySpec as
+    ((HP_Web_Jetadmin, *) -> (Newer_HP_Device, 3702) on udp) AND
+    ((HP_Web_Jetadmin, *) -> (Newer_HP_Device, 3910) on tcp) AND
+    ((HP_Web_Jetadmin, *) -> (Newer_HP_Device, 3911) on tcp)
+
+def PortsHPWebJetadminuses_RemotingSpec as
+    ((HP_Web_Jetadmin_Client, *) -> (HP_Web_Jetadmin, 4088) on tcp)
+
+def PortsHPWebJetadminuses_ClientEventNotificationSpec as
+    ((HP_Web_Jetadmin_Client, *) -> (HP_Web_Jetadmin, 4089) on tcp)
+
+def PortsHPWebJetadminuses_WebServicesHTTPSforFutureSmartSpec as
+    ((HP_Web_Jetadmin, *) -> (HP_Web_Services_Capable_Devices, 7627) on tcp)
+
+def PortsHPWebJetadminuses_HPWebJetadminDiscoveryListenSpec as
+    ((HP_Web_Jetadmin, *) -> (HP_Web_Jetadmin, 8000) on udp)
+
+def PortsHPWebJetadminuses_WebServerSpec as
+    ((HP_Web_Jetadmin_Client, *) -> (HP_Web_Jetadmin, 8000) on tcp)
+
+def PortsHPWebJetadminuses_DeviceEventingCallbackHTTPSSpec as
+    ((Newer_HP_Device, *) -> (HP_Web_Jetadmin, 8050) on tcp)
+
+def PortsHPWebJetadminuses_HPWSProAdapterSpec as
+    ((HPWSProAdapter, *) -> (Non_Web_Services_Capable_Device, 8080) on tcp)
+
+def PortsHPWebJetadminuses_OXPmWebServicesHTTPSpec as
+    ((HP_Open_Extensibility_Platform_Device, *) -> (HP_Web_Jetadmin, 8140) on tcp)
+
+def PortsHPWebJetadminuses_OXPmWebServicesHTTPSSpec as
+    ((HP_Open_Extensibility_Platform_Device, *) -> (HP_Web_Jetadmin, 8143) on tcp)
+
+def PortsHPWebJetadminuses_SecureWebServerHTTPSSpec as
+    ((HP_Web_Jetadmin_Client, *) -> (HP_Web_Jetadmin, 8443) on tcp) OR
+    ((Managed_Printer_Device, *) -> (HP_Web_Jetadmin, 8443) on tcp)
+
+def PortsHPWebJetadminuses_PrinterFirmwareUpgradeandTestFileOperationSpec as
+    ((HP_Web_Jetadmin, *) -> (Managed_Printer_Device, 9100) on tcp)
+
+def PortsHPWebJetadminuses_TrapsListenerSpec as
+    ((Managed_Printer_Device, *) -> (HP_Web_Jetadmin, 27892) on udp)
+
+def PortsHPWebJetadminuses_WSHelloListenerSpec as
+    ((Host_with_HP_Web_Jetadmin_Software, *) -> (HP_Web_Jetadmin, 27893) on udp)
+
+def PortsHPWebJetadminusesSpec as
+    PortsHPWebJetadminuses_TFTPIncomingPortSpec? AND
+    PortsHPWebJetadminuses_HTTPforEWSandFirmwareRetrievalSpec? AND
+    PortsHPWebJetadminuses_SNMPSpec? AND
+    PortsHPWebJetadminuses_SLPListenSpec? AND
+    PortsHPWebJetadminuses_HTTPSforDeviceConfigurationSpec? AND
+    PortsHPWebJetadminuses_ConfigurationforHPMFPDevicesSpec? AND
+    PortsHPWebJetadminuses_MicrosoftSQLServerSpec? AND
+    PortsHPWebJetadminuses_BuildMonitorSpec? AND
+    PortsHPWebJetadminuses_HPSecurityManagerDeviceAnnouncementsSpec? AND
+    PortsHPWebJetadminuses_WSDiscoverySpec? AND
+    PortsHPWebJetadminuses_RemotingSpec AND
+    PortsHPWebJetadminuses_ClientEventNotificationSpec? AND
+    PortsHPWebJetadminuses_WebServicesHTTPSforFutureSmartSpec? AND
+    PortsHPWebJetadminuses_HPWebJetadminDiscoveryListenSpec? AND
+    PortsHPWebJetadminuses_WebServerSpec AND
+    PortsHPWebJetadminuses_DeviceEventingCallbackHTTPSSpec? AND
+    PortsHPWebJetadminuses_HPWSProAdapterSpec? AND
+    PortsHPWebJetadminuses_OXPmWebServicesHTTPSpec? AND
+    PortsHPWebJetadminuses_OXPmWebServicesHTTPSSpec? AND
+    PortsHPWebJetadminuses_SecureWebServerHTTPSSpec AND
+    PortsHPWebJetadminuses_PrinterFirmwareUpgradeandTestFileOperationSpec? AND
+    PortsHPWebJetadminuses_TrapsListenerSpec? AND
+    PortsHPWebJetadminuses_WSHelloListenerSpec?
+
+def PortsRequiredforWMIDiscoveriesSpec as
+    ((HP_Web_Jetadmin, *) -> (PC_without_HP_Proxy_Agent, 135) on tcp) AND
+    ((HP_Web_Jetadmin, *) -> (PC_without_HP_Proxy_Agent, 49152-65535) on tcp)
+
+def FirewallSpecificationSpec as
+    PortsHPWebJetadminusesSpec AND PortsRequiredforWMIDiscoveriesSpec?

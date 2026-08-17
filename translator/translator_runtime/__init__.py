@@ -1,0 +1,2 @@
+"""Configurable translator artifact wrapper."""
+

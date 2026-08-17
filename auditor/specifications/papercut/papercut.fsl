@@ -1,0 +1,289 @@
+def MainApplicationServerPortsSpec as
+    ((PaperCut_Internal_Clients, *) -> (PaperCut_Application_Server, 9191) on tcp) AND
+    ((PaperCut_Internal_Clients, *) -> (PaperCut_Application_Server, 9192) on tcp) AND
+    ((Embedded_MFDs, *) -> (PaperCut_Application_Server, 9193) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Global_Entitlements_Service, 443) on tcp)?
+
+def CardReaders_ElatecTWN3ReaderandTCPConverterSpec as
+    ((PaperCut_Application_Server, *) -> (Elatec_TWN3_Reader_and_TCP_Converter, 7778) on tcp)
+
+def CardReaders_RFIDeasLantronixSpec as
+    ((PaperCut_Application_Server, *) -> (RFIDeas_Lantronix, 10001) on tcp)
+
+def CardReaders_RFIdeasEthernet241Spec as
+    ((PaperCut_Application_Server, *) -> (RFIdeas_Ethernet_241, 2000) on tcp)
+
+def CardReadersSpec as
+    CardReaders_ElatecTWN3ReaderandTCPConverterSpec OR
+    CardReaders_RFIDeasLantronixSpec OR
+    CardReaders_RFIdeasEthernet241Spec
+
+def ExternalDatabaseSpec as
+    ((PaperCut_Application_Server, *) -> (Oracle_Database, 1521) on tcp) OR
+    ((PaperCut_Application_Server, *) -> (Microsoft_SQL_Server, 1433) on tcp) OR
+    ((PaperCut_Application_Server, *) -> (Microsoft_SQL_Server_Express, 1450) on tcp) OR
+    ((PaperCut_Application_Server, *) -> (MySQL_Database, 3306) on tcp) OR
+    ((PaperCut_Application_Server, *) -> (PostgreSQL_Database, 5432) on tcp)
+
+def DirectoryandAuthenticationServices_GoogleCloudDirectorySpec as
+    ((PaperCut_Application_Server, *) -> (Google_Cloud_Directory, 636) on tcp)
+
+def DirectoryandAuthenticationServices_AzureActiveDirectorywithSecureLDAPSpec as
+    ((PaperCut_Application_Server, *) -> (Azure_Active_Directory, 636) on tcp)
+
+def DirectoryandAuthenticationServices_AzureActiveDirectorywithMicrosoftGraphSpec as
+    ((PaperCut_Application_Server, *) -> (Microsoft_Graph_API, 443) on tcp)
+
+def DirectoryandAuthenticationServices_LDAPDirectoryServiceSpec as
+    ((PaperCut_Application_Server, *) -> (LDAP_Directory_Service, 636) on tcp) OR
+    ((PaperCut_Application_Server, *) -> (LDAP_Directory_Service, 389) on tcp)
+
+def DirectoryandAuthenticationServices_ActiveDirectorySpec as
+    ((PaperCut_Application_Server, *) -> (Active_Directory, 445) on tcp, udp) AND
+    ((PaperCut_Application_Server, *) -> (Active_Directory, 88) on tcp, udp) AND
+    ((PaperCut_Application_Server, *) -> (Active_Directory, 389) on udp) AND
+    ((PaperCut_Application_Server, *) -> (Active_Directory, 53) on tcp, udp) AND
+    ((PaperCut_Application_Server, *) -> (Active_Directory, 135) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Active_Directory, 49152-65535) on tcp)
+
+def DirectoryandAuthenticationServices_SigninwithGoogleSpec as
+    ((PaperCut_Application_Server, *) -> (Google_Authentication_Services, 443) on tcp)
+
+def DirectoryandAuthenticationServices_SigninwithMicrosoftSpec as
+    ((PaperCut_Application_Server, *) -> (Microsoft_Graph_API, 443) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Microsoft_Authentication_Services, 443) on tcp)
+
+def DirectoryandAuthenticationServicesSpec as
+    DirectoryandAuthenticationServices_GoogleCloudDirectorySpec OR
+    DirectoryandAuthenticationServices_AzureActiveDirectorywithSecureLDAPSpec OR
+    DirectoryandAuthenticationServices_AzureActiveDirectorywithMicrosoftGraphSpec OR
+    DirectoryandAuthenticationServices_LDAPDirectoryServiceSpec OR
+    DirectoryandAuthenticationServices_ActiveDirectorySpec OR
+    DirectoryandAuthenticationServices_SigninwithGoogleSpec OR
+    DirectoryandAuthenticationServices_SigninwithMicrosoftSpec
+
+def PaperCutCloudServices_GlobalEntitlementsServiceSpec as
+    ((PaperCut_Application_Server, *) -> (PaperCut_MF_Cloud_Services, 443) on tcp)
+
+def PaperCutCloudServices_PaperCutMFCloudServicesIntegratedScanningSpec as
+    ((PaperCut_Application_Server, *) -> (Google_Cloud_Storage_Scan, 443) on tcp)
+
+def PaperCutCloudServices_PaperCutGrowsSpec as
+    ((PaperCut_Application_Server, *) -> (PaperCut_Grows, 443) on tcp)
+
+def PaperCutCloudServicesSpec as
+    PaperCutCloudServices_GlobalEntitlementsServiceSpec? AND
+    PaperCutCloudServices_PaperCutMFCloudServicesIntegratedScanningSpec? AND
+    PaperCutCloudServices_PaperCutGrowsSpec?
+
+def ComponentServices_IntegratedScanning_Self_HostedDocumentProcessingSpec as
+    ((PaperCut_Application_Server, *) -> (Self_Hosted_Document_Processing_Server, 9181) on tcp) AND
+    ((Self_Hosted_Document_Processing_Server, *) -> (PaperCut_OCR_Update_Service, 443) on tcp)
+
+def ComponentServices_JobTicketingSpec as
+    ((PaperCut_Internal_Clients, *) -> (PaperCut_Application_Server, 9111) on tcp) AND
+    (((PaperCut_Application_Server, *) -> (Job_Ticketing_Update_Service, 443) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Job_Ticketing_Update_Storage, 443) on tcp))
+
+def ComponentServices_SNMPSpec as
+    ((PaperCut_Application_Server, *) -> (Network_Printers_Devices, 161) on udp)
+
+def ComponentServices_WindowsPrintSpoolerServiceSpec as
+    (((PaperCut_Application_Server, *) -> (PaperCut_Secondary_Servers, 49152-65535) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (PaperCut_Secondary_Servers, 445) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (PaperCut_Secondary_Servers, 135) on tcp)) AND
+    (((PaperCut_Application_Server, *) -> (PaperCut_Secondary_Servers, 137, 138) on udp) AND
+    ((PaperCut_Application_Server, *) -> (PaperCut_Secondary_Servers, 139) on tcp))?
+
+def ComponentServicesSpec as
+    ComponentServices_IntegratedScanning_Self_HostedDocumentProcessingSpec? AND
+    ComponentServices_JobTicketingSpec? AND
+    ComponentServices_SNMPSpec? AND
+    ComponentServices_WindowsPrintSpoolerServiceSpec?
+
+
+def PrintDeployFirewallRules_ApplicationServerCommunicationSpec as
+    ((PaperCut_Clients, *) -> (PaperCut_Application_Server, 9174) on tcp) AND
+    ((PaperCut_Clients, *) -> (PaperCut_Application_Server, 9173) on tcp)? AND
+    (((PaperCut_Application_Server, *) -> (Print_Deploy_Update_Service, 443) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Google_Cloud_Storage, 443) on tcp)) AND
+    ((PaperCut_Application_Server, *) -> (Mobility_Print_Server, 9163, 9164) on tcp)
+
+def PrintDeployFirewallRulesSpec as
+    PrintDeployFirewallRules_ApplicationServerCommunicationSpec
+
+def MobilityPrintFirewallRules_Auto_updateSpec as
+    ((Mobility_Print_Server, *) -> (Mobility_Print_Update_Services, 443) on tcp) AND
+    ((Mobility_Print_Server, *) -> (PaperCut_Content_Delivery_Network, 443) on tcp)
+
+def MobilityPrintFirewallRules_mDNSPrinterDiscoverySpec as
+    ((PaperCut_Clients, *) -> (Mobility_Print_Server, 5353) on udp) AND
+    ((PaperCut_Clients, *) -> (Mobility_Print_Server, 9164) on tcp) AND
+    ((PaperCut_Clients, *) -> (Mobility_Print_Server, 9163) on tcp)
+
+def MobilityPrintFirewallRules_KnownHostPrinterDiscoverySpec as
+    ((Mobility_Print_Server, *) -> (PaperCut_Client_Download_Services, 443) on tcp) AND
+    ((PaperCut_Clients, *) -> (Mobility_Print_Server, 9163) on tcp) AND
+    ((PaperCut_Clients, *) -> (Mobility_Print_Server, 9164) on tcp)
+
+def MobilityPrintFirewallRules_DNSPrinterDiscoverySpec as
+    ((Local_DNS_Server, *) -> (Mobility_Print_Server, 53) on tcp, udp) AND
+    ((PaperCut_Clients, *) -> (Mobility_Print_Server, 9163) on tcp) AND
+    ((PaperCut_Clients, *) -> (Mobility_Print_Server, 9164) on tcp)
+
+def MobilityPrintFirewallRules_CloudPrintPrinterDiscoverySpec as
+    ((Mobility_Print_Server, *) -> (Mobility_Print_Cloud_Services, 443) on tcp) AND
+    ((Mobility_Print_Server, *) -> (Twilio_STUN_TURN_Services, 3478) on tcp, udp) AND
+    ((Mobility_Print_Server, *) -> (Twilio_STUN_TURN_Services, 443) on tcp)
+
+def MobilityPrintFirewallRulesSpec as
+    MobilityPrintFirewallRules_Auto_updateSpec AND
+    (MobilityPrintFirewallRules_mDNSPrinterDiscoverySpec OR
+    MobilityPrintFirewallRules_KnownHostPrinterDiscoverySpec OR
+    MobilityPrintFirewallRules_DNSPrinterDiscoverySpec OR
+    MobilityPrintFirewallRules_CloudPrintPrinterDiscoverySpec)
+
+def Multi_FunctionDeviceIntegration_BrotherSpec as
+    ((Brother_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp)
+
+def Multi_FunctionDeviceIntegration_CanonSpec as
+    ((Canon_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) AND
+    ((Canon_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp) AND
+    ((Canon_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9193) on tcp)
+
+def Multi_FunctionDeviceIntegration_DellAIPSpec as
+    ((Dell_AIP_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) AND
+    ((Dell_AIP_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Dell_AIP_Multi_Function_Device, 80) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Dell_AIP_Multi_Function_Device, 443) on tcp)
+
+def Multi_FunctionDeviceIntegration_HPSpec as
+    ((HP_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) AND
+    ((HP_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp) AND
+    ((HP_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9193) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (HP_Multi_Function_Device, 7627) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (HP_Multi_Function_Device, 80) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (HP_Multi_Function_Device, 443) on tcp)
+
+def Multi_FunctionDeviceIntegration_FujifilmBISpec as
+    ((Fujifilm_BI_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) AND
+    ((Fujifilm_BI_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Fujifilm_BI_Multi_Function_Device, 80) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Fujifilm_BI_Multi_Function_Device, 443) on tcp)
+
+def Multi_FunctionDeviceIntegration_Fuji_XeroxAIPSpec as
+    ((Fuji_Xerox_AIP_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) AND
+    ((Fuji_Xerox_AIP_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Fuji_Xerox_AIP_Multi_Function_Device, 80) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Fuji_Xerox_AIP_Multi_Function_Device, 443) on tcp)
+
+def Multi_FunctionDeviceIntegration_Konica_MinoltaSpec as
+    ((Konica_Minolta_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) AND
+    ((Konica_Minolta_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Konica_Minolta_Multi_Function_Device, 50003) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Konica_Minolta_Multi_Function_Device, 80) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Konica_Minolta_Multi_Function_Device, 443) on tcp) AND
+    ((Konica_Minolta_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9195) on tcp)
+
+def Multi_FunctionDeviceIntegration_KyoceraSpec as
+    ((Kyocera_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) AND
+    ((Kyocera_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp) AND
+    ((Kyocera_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9193) on tcp)
+
+def Multi_FunctionDeviceIntegration_LexmarkSpec as
+    ((Lexmark_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) AND
+    ((Lexmark_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp) AND
+    ((Lexmark_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9193) on tcp)
+
+def Multi_FunctionDeviceIntegration_RicohSDK_JSpec as
+    ((Ricoh_SDK_J_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp) AND
+    ((Ricoh_SDK_J_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) AND
+    ((Ricoh_SDK_J_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9193) on tcp) AND
+    ((Ricoh_SDK_J_Multi_Function_Device, *) -> (PaperCut_Application_Server, 51443) on tcp)
+
+def Multi_FunctionDeviceIntegration_RicohSmartSDKSpec as
+    (((Ricoh_SmartSDK_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) AND
+    ((Ricoh_SmartSDK_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp)) AND
+    ((Ricoh_SmartSDK_Multi_Function_Device, *) -> (PaperCut_Application_Server, 51443) on tcp)
+
+def Multi_FunctionDeviceIntegration_SamsungSpec as
+    (((Samsung_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp) AND
+    ((Samsung_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9193) on tcp)) AND
+    ((Samsung_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp)
+
+def Multi_FunctionDeviceIntegration_SharpSpec as
+    ((Sharp_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) AND
+    ((Sharp_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Sharp_Multi_Function_Device, 80) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Sharp_Multi_Function_Device, 443) on tcp)
+
+def Toshiba_SDK1_Spec as
+    (((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) OR
+    ((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp)) AND
+    (((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 10389) on tcp) OR
+    ((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 10636) on tcp)) AND
+    (((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 162) on udp) AND
+    ((PaperCut_Application_Server, *) -> (Toshiba_Multi_Function_Device, 161) on udp))
+
+def Toshiba_SDK2_Spec as
+    (((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) OR
+    ((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp)) AND
+    (((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 10389) on tcp) OR
+    ((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 10636) on tcp)) AND
+    (((PaperCut_Application_Server, *) -> (Toshiba_Multi_Function_Device, 49629) on tcp) OR
+    ((PaperCut_Application_Server, *) -> (Toshiba_Multi_Function_Device, 49630) on tcp))
+
+def Toshiba_SDK3_RD30_Spec as
+    (((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) OR
+    ((Toshiba_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp)) AND
+    (((PaperCut_Application_Server, *) -> (Toshiba_Multi_Function_Device, 49629) on tcp) OR
+    ((PaperCut_Application_Server, *) -> (Toshiba_Multi_Function_Device, 49630) on tcp)) AND
+    ((PaperCut_Application_Server, *) -> (Toshiba_Multi_Function_Device, 50083) on tcp)?
+
+def Multi_FunctionDeviceIntegration_Toshiba_SDK_Choice_Spec as
+    (Toshiba_SDK1_Spec OR Toshiba_SDK2_Spec OR Toshiba_SDK3_RD30_Spec)
+
+def Multi_FunctionDeviceIntegration_VCCTerminalsSpec as
+    ((PaperCut_Application_Server, *) -> (VCC_Terminals, 1234, 1235) on tcp)
+
+def Multi_FunctionDeviceIntegration_XeroxSpec as
+    ((Xerox_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9191) on tcp) AND
+    ((Xerox_Multi_Function_Device, *) -> (PaperCut_Application_Server, 9192) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Xerox_Multi_Function_Device, 80) on tcp) AND
+    ((PaperCut_Application_Server, *) -> (Xerox_Multi_Function_Device, 443) on tcp)
+
+def Multi_FunctionDeviceIntegrationSpec as
+    Multi_FunctionDeviceIntegration_BrotherSpec OR
+    Multi_FunctionDeviceIntegration_CanonSpec OR
+    Multi_FunctionDeviceIntegration_DellAIPSpec OR
+    Multi_FunctionDeviceIntegration_HPSpec OR
+    Multi_FunctionDeviceIntegration_FujifilmBISpec OR
+    Multi_FunctionDeviceIntegration_Fuji_XeroxAIPSpec OR
+    Multi_FunctionDeviceIntegration_Konica_MinoltaSpec OR
+    Multi_FunctionDeviceIntegration_KyoceraSpec OR
+    Multi_FunctionDeviceIntegration_LexmarkSpec OR
+    Multi_FunctionDeviceIntegration_RicohSDK_JSpec OR
+    Multi_FunctionDeviceIntegration_RicohSmartSDKSpec OR
+    Multi_FunctionDeviceIntegration_SamsungSpec OR
+    Multi_FunctionDeviceIntegration_SharpSpec OR
+    Multi_FunctionDeviceIntegration_Toshiba_SDK_Choice_Spec OR
+    Multi_FunctionDeviceIntegration_VCCTerminalsSpec OR
+    Multi_FunctionDeviceIntegration_XeroxSpec
+
+def PaperCutConnectorforMicrosoftUniversalPrintSpec as
+    ((PaperCut_Universal_Print_Connector, *) -> (Microsoft_Universal_Print_Services, 443) on tcp) AND
+    ((PaperCut_Universal_Print_Connector, *) -> (PaperCut_Universal_Print_Stats_Service, 443) on tcp) AND
+    ((PaperCut_Universal_Print_Connector, *) -> (Universal_Print_Connector_Update_Service, 443) on tcp) AND
+    ((PaperCut_Secondary_Universal_Print_Connector, *) -> (PaperCut_Primary_Universal_Print_Connector, 9151) on tcp)
+
+def PaperCutFirewallSpec as
+    MainApplicationServerPortsSpec AND
+    CardReadersSpec? AND
+    ExternalDatabaseSpec AND
+    DirectoryandAuthenticationServicesSpec AND
+    PaperCutCloudServicesSpec? AND
+    ComponentServicesSpec? AND
+    PrintDeployFirewallRulesSpec? AND
+    MobilityPrintFirewallRulesSpec? AND
+    Multi_FunctionDeviceIntegrationSpec AND
+    PaperCutConnectorforMicrosoftUniversalPrintSpec?

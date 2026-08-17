@@ -1,0 +1,76 @@
+def AdministratorAccessToHubSpec as
+    ((LISTSERV_Maestro_Administrator, *) -> (Maestro_Administration_Hub, 80) on tcp) OR
+    ((LISTSERV_Maestro_Administrator, *) -> (Maestro_Administration_Hub, 443) on tcp)
+
+def AdministratorAccessToUserInterfaceSpec as
+    ((LISTSERV_Maestro_Administrator, *) -> (Maestro_User_Interface, 80) on tcp) OR
+    ((LISTSERV_Maestro_Administrator, *) -> (Maestro_User_Interface, 443) on tcp)
+
+def UserAccessToUserInterfaceSpec as
+    ((LISTSERV_Maestro_User, *) -> (Maestro_User_Interface, 80) on tcp) OR
+    ((LISTSERV_Maestro_User, *) -> (Maestro_User_Interface, 443) on tcp)
+
+def HubUserInterfaceCommunicationSpec as
+    ((Maestro_Administration_Hub, *) -> (Maestro_User_Interface, 1099) on tcp) AND
+    ((Maestro_User_Interface, *) -> (Maestro_Administration_Hub, 1099) on tcp)
+
+def HubTrackerCommunicationSpec as
+    ((Maestro_Administration_Hub, *) -> (Maestro_Tracker, 1099) on tcp) AND
+    ((Maestro_Tracker, *) -> (Maestro_Administration_Hub, 1099) on tcp)
+
+def UserInterfaceTrackerCommunicationSpec as
+    ((Maestro_User_Interface, *) -> (Maestro_Tracker, 1099) on tcp) AND
+    ((Maestro_User_Interface, *) -> (Maestro_Tracker, 7000) on tcp)
+
+def UserInterfaceExternalDatabaseSpec as
+    ((Maestro_User_Interface, *) -> (External_Databases, 1433) on tcp)
+
+def LISTSERVExternalDatabaseSpec as
+    ((LISTSERV, *) -> (External_Databases, 1433) on tcp)
+
+def LISTSERVUserInterfaceDatabaseSpec as
+    ((LISTSERV, *) -> (Maestro_User_Interface, 1433) on tcp)
+
+def UserInterfaceLISTSERVCommunicationSpec as
+    ((Maestro_User_Interface, *) -> (LISTSERV, 2306) on tcp)
+
+def InternetAccessToUserInterfaceSpec as
+    ((Internet, *) -> (Maestro_User_Interface, 80) on tcp) OR
+    ((Internet, *) -> (Maestro_User_Interface, 443) on tcp)
+
+def InternetAccessToTrackerSpec as
+    ((Internet, *) -> (Maestro_Tracker, 80) on tcp) OR
+    ((Internet, *) -> (Maestro_Tracker, 443) on tcp)
+
+def LISTSERVSMTPCommunicationSpec as
+    ((LISTSERV, *) -> (SMTP_Server, 25) on tcp) AND
+    ((SMTP_Server, *) -> (LISTSERV, 25) on tcp)
+
+def InternetSMTPCommunicationSpec as
+    ((Internet, *) -> (SMTP_Server, 25) on tcp) AND
+    ((SMTP_Server, *) -> (Internet, 25) on tcp)
+
+def InternetAccessToLISTSERVSpec as
+    ((Internet, *) -> (LISTSERV, 25) on tcp) AND
+    (((Internet, *) -> (LISTSERV, 80) on tcp) OR
+    ((Internet, *) -> (LISTSERV, 443) on tcp))
+
+def LSoftFirewallCommunicationSpec as
+    AdministratorAccessToHubSpec AND
+    AdministratorAccessToUserInterfaceSpec? AND
+    UserAccessToUserInterfaceSpec AND
+    HubUserInterfaceCommunicationSpec AND
+    HubTrackerCommunicationSpec AND
+    UserInterfaceTrackerCommunicationSpec? AND
+    UserInterfaceExternalDatabaseSpec? AND
+    LISTSERVExternalDatabaseSpec? AND
+    LISTSERVUserInterfaceDatabaseSpec? AND
+    UserInterfaceLISTSERVCommunicationSpec AND
+    InternetAccessToUserInterfaceSpec AND
+    InternetAccessToTrackerSpec AND
+    LISTSERVSMTPCommunicationSpec AND
+    InternetSMTPCommunicationSpec AND
+    InternetAccessToLISTSERVSpec
+
+def LSoftFirewallSpec as
+    LSoftFirewallCommunicationSpec
