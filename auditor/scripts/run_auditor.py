@@ -163,6 +163,7 @@ def main() -> int:
             raise SystemExit(
                 "Firewall audit did not produce exactly one intermediate summary"
             )
+        rule_mappings = sorted(intermediate_dir.glob("audit_*.rule_mapping.json"))
 
         render_command = [
             sys.executable,
@@ -178,6 +179,8 @@ def main() -> int:
             "--title",
             str(args.title or f"Elastispec audit: {config_path.stem}"),
         ]
+        if len(rule_mappings) == 1:
+            render_command.extend(["--rule_mapping", str(rule_mappings[0])])
         _run_stage("Compliance report rendering", render_command)
 
         shutil.copy2(rendered_html, output_path)

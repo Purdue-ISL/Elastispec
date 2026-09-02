@@ -3,7 +3,8 @@ ASA Version 9.12(4)
 hostname toy-papercut-fw
 !
 ! ============================================================================
-! ASA twin of toy_firewall_config.txt (same topology, same security policy),
+! ASA twin of toy_firewall_config.txt (same topology, same security policy
+! apart from one deliberate extra port, see MFD_INTEGRATION_PORTS below),
 ! expressed in Cisco ASA idiom:
 ! - object-groups for hosts, subnets, and service ports (ASA policies are
 !   normally written this way),
@@ -19,9 +20,10 @@ hostname toy-papercut-fw
 ! - "in" governs the zone's own OUTBOUND traffic: permit ip any any
 !   (allow-all outbound).
 !
-! Auditing this config produces the same 33 leaf verdicts as the IOS twin;
-! only cosmetic details differ (interface labels in reachability/conjecture
-! output use nameif names such as "ece" instead of "GigabitEthernet0/0").
+! Auditing this config produces the same 33 leaf verdicts as the IOS twin,
+! since the extra port opens traffic no leaf asks about. Interface labels in
+! reachability/conjecture output use nameif names such as "ece" rather than
+! "GigabitEthernet0/0". The extra port surfaces in the out-of-spec table.
 ! ============================================================================
 !
 same-security-traffic permit inter-interface
@@ -67,11 +69,15 @@ object-group network SERVER_SUBNET
 object-group network PG_DATABASE
  network-object host 172.16.20.40
 !
+! tcp/5114 is a legacy port no vendor document justifies. It sits in the same
+! object-group as four documented ports, so the ACL line that references the
+! group is still fully justified as a line; only a per-port check reports it.
 object-group service MFD_INTEGRATION_PORTS
  service-object tcp destination eq 9191
  service-object tcp destination eq 9192
  service-object tcp destination eq 9193
  service-object tcp destination eq 10389
+ service-object tcp destination eq 5114
 !
 object-group service SNMP_TRAP
  service-object udp destination eq 162

@@ -47,6 +47,15 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from pybatfish.client.session import Session
 from pybatfish.datamodel.flow import HeaderConstraints, PathConstraints
 
+from rule_mapping import (
+    Inventory,
+    RuleKey,
+    RuleMappingUnavailable,
+    build_inventory,
+    finalize as finalize_rule_mapping,
+    unavailable_rule_mapping,
+)
+
 
 @dataclass(frozen=True)
 class LeafFlow:
@@ -1112,6 +1121,123 @@ def _bucket_src_specs_by_fw_interface(
     return buckets
 
 
+def _ingress_interface_name(location: str) -> str:
+    text = str(location or "").strip()
+    if text.startswith("@enter(") and text.endswith(")"):
+        text = text[len("@enter(") : -1]
+    if "[" in text and text.endswith("]"):
+        return text.split("[", 1)[1][:-1]
+    return text
+
+
+def _state_specs_by_ingress(record: Dict[str, Any]) -> Dict[str, List[str]]:
+    output: Dict[str, List[str]] = {}
+    for ingress in (record or {}).get("all_ingresses") or []:
+        if not isinstance(ingress, dict):
+            continue
+        location = str(ingress.get("ingressLocation") or "").strip()
+        if not location:
+            continue
+        values: List[str] = []
+        for field_name in ("prefixes", "prefixes_ranges"):
+            raw_values = ingress.get(field_name) or []
+            if not isinstance(raw_values, list):
+                continue
+            for value in raw_values:
+                text = str(value or "").strip()
+                if text and text not in values:
+                    values.append(text)
+        if values:
+            output[location] = values
+    return output
+
+
+def _ipv4_networks_for_spec(spec: str) -> List[Any]:
+    import ipaddress
+
+    text = str(spec or "").strip()
+    if not text:
+        return []
+    try:
+        if "-" in text and "/" not in text:
+            first, last = [part.strip() for part in text.split("-", 1)]
+            first_ip = ipaddress.ip_address(first)
+            last_ip = ipaddress.ip_address(last)
+            if not isinstance(first_ip, ipaddress.IPv4Address) or not isinstance(
+                last_ip, ipaddress.IPv4Address
+            ):
+                return []
+            return list(ipaddress.summarize_address_range(first_ip, last_ip))
+        value = (
+            ipaddress.ip_network(text, strict=False)
+            if "/" in text
+            else ipaddress.ip_network(f"{text}/32", strict=False)
+        )
+        return [value] if isinstance(value, ipaddress.IPv4Network) else []
+    except Exception:
+        return []
+
+
+def _intersect_ipv4_specs(left: Sequence[str], right: Sequence[str]) -> List[str]:
+    import ipaddress
+
+    intersections: List[Any] = []
+    for left_spec in left:
+        for left_net in _ipv4_networks_for_spec(left_spec):
+            for right_spec in right:
+                for right_net in _ipv4_networks_for_spec(right_spec):
+                    if not left_net.overlaps(right_net):
+                        continue
+                    intersections.append(
+                        left_net if left_net.subnet_of(right_net) else right_net
+                    )
+    if not intersections:
+        return []
+    return [str(net) for net in ipaddress.collapse_addresses(intersections)]
+
+
+def _conjectured_source_buckets(
+    entity: str,
+    leaf: str,
+    entity_intersected: Dict[str, Dict[str, Any]],
+    entity_node_conjectures: Dict[str, Dict[str, Any]],
+) -> Dict[str, List[str]]:
+    """Source space a conjectured role occupies, per firewall ingress interface.
+
+    A leaf whose source role has no inventory mapping never reaches the reachability
+    loop, so its address space only becomes known here, once the BDD analysis has
+    narrowed the role both locally and against the whole specification.
+    """
+    entity_details = entity_node_conjectures.get(entity) or {}
+    local_record: Dict[str, Any] = {}
+    for record in entity_details.get("leaves") or []:
+        if not isinstance(record, dict):
+            continue
+        if str(record.get("leaf") or "") != leaf:
+            continue
+        if str(record.get("role_position") or "") not in {"src", "both"}:
+            continue
+        local_record = record.get("local") or {}
+        break
+
+    local_by_ingress = _state_specs_by_ingress(local_record)
+    root_by_ingress = _state_specs_by_ingress(entity_intersected.get(entity) or {})
+    buckets: Dict[str, List[str]] = {}
+    for location, local_specs in local_by_ingress.items():
+        root_specs = root_by_ingress.get(location)
+        if not root_specs:
+            continue
+        overlap = _intersect_ipv4_specs(local_specs, root_specs)
+        interface = _ingress_interface_name(location)
+        if not interface or not overlap:
+            continue
+        bucket = buckets.setdefault(interface, [])
+        for spec in overlap:
+            if spec not in bucket:
+                bucket.append(spec)
+    return buckets
+
+
 def _bucket_src_ips_by_fw_interface(
     fw_ifaces: Sequence[Tuple[str, str]],
     src_ips: Sequence[str],
@@ -1746,6 +1872,42 @@ def main() -> None:
     # so the interface inventory is always needed.
     fw_ifaces: List[Tuple[str, str]] = _fw_interface_table(bf, fw_node=fw_node, snapshot_name=args.snapshot)
 
+    # The permit-line inventory is the denominator for rule mapping: "no leaf justifies
+    # this line" cannot be stated without knowing every line that exists. It depends
+    # only on the snapshot, so it is built once, here, rather than per leaf.
+    rule_inventory: Optional[Inventory] = None
+    rule_mapping_error = ""
+    try:
+        rule_inventory = build_inventory(bf, args.snapshot, fw_node, snapshot_dir)
+    except RuleMappingUnavailable as exc:
+        rule_mapping_error = str(exc)
+    except Exception as exc:  # noqa: BLE001 - rule mapping must never fail the audit
+        rule_mapping_error = f"unexpected error building the rule inventory: {exc}"
+
+    def _record_rule_matches(
+        rec: Dict[str, Any],
+        headers: Dict[str, Any],
+        source_interface: str,
+        destination_interfaces: Sequence[str],
+    ) -> None:
+        """Collect the permit lines carrying this traffic, beside the reachability query.
+
+        The result is stashed on the leaf record rather than applied immediately,
+        because a leaf only justifies a rule once its final verdict is known.
+        """
+        if rule_inventory is None:
+            return
+        try:
+            found = rule_inventory.match(
+                bf, args.snapshot, headers, source_interface, destination_interfaces
+            )
+        except Exception:  # noqa: BLE001 - a failed match must not fail the audit
+            return
+        bucket = rec.setdefault("rule_matches", [])
+        for key in found:
+            if list(key) not in bucket:
+                bucket.append(list(key))
+
     def _proto_headers(proto_s: str) -> Dict[str, Any]:
         p = (proto_s or "").strip().lower()
         if not p or p == "ip":
@@ -2061,6 +2223,17 @@ def main() -> None:
         if lf.src_role == "*":
             # Wildcard sources are not tied to a specific owner. Fall back to the group query.
             headers_group["srcIps"] = src_ipspec
+            _record_rule_matches(
+                rec,
+                headers_group,
+                "",
+                sorted(
+                    _bucket_src_specs_by_fw_interface(
+                        fw_ifaces,
+                        [str(x).strip() for x in dst_ip_list if isinstance(x, str) and x.strip()],
+                    )
+                ),
+            )
             exists_success, witness_flows = _reachability_for_group_headers(
                 bf,
                 headers=headers_group,
@@ -2081,10 +2254,14 @@ def main() -> None:
             src_specs = [str(x).strip() for x in src_ip_list if isinstance(x, str) and x.strip()]
             buckets = _bucket_src_specs_by_fw_interface(fw_ifaces, src_specs)
             rec["srcIfaceBucketCount"] = int(len(buckets))
+            dst_specs = [str(x).strip() for x in dst_ip_list if isinstance(x, str) and x.strip()]
+            dst_ifaces = sorted(_bucket_src_specs_by_fw_interface(fw_ifaces, dst_specs))
             for iface, ips_in_iface in sorted(buckets.items()):
                 start_spec = f"@enter({fw_node}[{iface}])"
                 h = dict(headers_group)
                 h["srcIps"] = ",".join(ips_in_iface)
+
+                _record_rule_matches(rec, h, iface, dst_ifaces)
 
                 ok, ok_flows = _reachability_for_group_headers(
                     bf,
@@ -2411,6 +2588,53 @@ def main() -> None:
         conjectures_detail_path.write_text("\n".join(detail_lines) + "\n")
         print(f"[DONE] wrote {conjectures_detail_path}")
 
+    # Permit lines justified by each satisfied leaf, keyed by rule so that several
+    # leaves (and, when an audit covers several specifications, several applications)
+    # can jointly justify one rule.
+    justifications: Dict[RuleKey, List[Dict[str, Any]]] = {}
+
+    def _leaf_match_headers(rec: Dict[str, Any]) -> Dict[str, Any]:
+        headers: Dict[str, Any] = dict(_proto_headers(str(rec.get("proto") or "")))
+        ports_expr = str(rec.get("ports") or "*").strip()
+        if ports_expr and ports_expr != "*":
+            headers["dstPorts"] = ports_expr
+        return headers
+
+    def _match_conjectured_source_leaf(
+        rec: Dict[str, Any],
+        leaf_name: str,
+        entity: str,
+        base_headers: Dict[str, Any],
+    ) -> List[RuleKey]:
+        """Match a leaf whose source was conjectured, which the leaf loop had to skip.
+
+        These leaves exit before any reachability query because their source role has
+        no inventory mapping, so this is the one place their traffic can be attributed
+        to configuration lines.
+        """
+        if rule_inventory is None:
+            return []
+        dst_specs = _map_role_to_ips(str(rec.get("dst_role") or "").strip(), role_ip_map_multi)
+        if not dst_specs:
+            return []
+        src_buckets = _conjectured_source_buckets(
+            entity, leaf_name, entity_intersected, entity_node_conjectures
+        )
+        dst_ifaces = sorted(_bucket_src_specs_by_fw_interface(fw_ifaces, dst_specs))
+        found: List[RuleKey] = []
+        for iface, src_specs in sorted(src_buckets.items()):
+            headers = dict(base_headers)
+            headers["srcIps"] = _ipspec(src_specs)
+            headers["dstIps"] = _ipspec(dst_specs)
+            try:
+                keys = rule_inventory.match(bf, args.snapshot, headers, iface, dst_ifaces)
+            except Exception:  # noqa: BLE001 - a failed match must not fail the audit
+                continue
+            for key in keys:
+                if key not in found:
+                    found.append(key)
+        return found
+
     for r in results:
         if not isinstance(r, dict):
             continue
@@ -2473,6 +2697,26 @@ def main() -> None:
                 tag = "UNSAT"
                 comment = ""
 
+        # Only a satisfied leaf justifies a rule. Conjectured leaves count, since their
+        # source space is inferred from the network rather than absent; the verdict
+        # travels with the match so a reviewer can tell the two apart.
+        if rule_inventory is not None and tag in {"VALID", "CONJECTURED-SAT"}:
+            leaf_record = {
+                "leaf": leaf,
+                "verdict": tag,
+                "evidence": "CONJECTURED" if tag == "CONJECTURED-SAT" else "CONFIRMED",
+                "spec": spec_root or fsl_path.stem,
+                "headers": _leaf_match_headers(r),
+            }
+            if has_unmapped_src:
+                keys = _match_conjectured_source_leaf(
+                    r, leaf, str(src or "").strip(), leaf_record["headers"]
+                )
+            else:
+                keys = [tuple(k) for k in r.get("rule_matches") or []]
+            for key in keys:
+                justifications.setdefault(key, []).append(leaf_record)
+
         if comment:
             lines.append(f"{tag}\t{leaf}\t# {comment}")
         else:
@@ -2501,6 +2745,24 @@ def main() -> None:
     txt_path = out_dir / f"{out_stem}.summary.txt"
     txt_path.write_text("\n".join(lines) + "\n")
     print(f"[DONE] wrote {txt_path}")
+
+    if rule_inventory is None:
+        rule_mapping = unavailable_rule_mapping(
+            rule_mapping_error or "Rule analysis was unavailable."
+        )
+    else:
+        try:
+            rule_mapping = finalize_rule_mapping(
+                bf, args.snapshot, rule_inventory, justifications
+            )
+        except RuleMappingUnavailable as exc:
+            rule_mapping = unavailable_rule_mapping(str(exc))
+        except Exception as exc:  # noqa: BLE001 - rule mapping must never fail the audit
+            rule_mapping = unavailable_rule_mapping(f"unexpected error: {exc}")
+
+    rule_mapping_path = out_dir / f"{out_stem}.rule_mapping.json"
+    rule_mapping_path.write_text(json.dumps(rule_mapping, indent=2) + "\n")
+    print(f"[DONE] wrote {rule_mapping_path}")
 
 
 if __name__ == "__main__":

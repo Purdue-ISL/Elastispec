@@ -582,6 +582,122 @@ def _html_escape(s: str) -> str:
     )
 
 
+def _load_rule_mapping(path: Optional[Path]) -> Dict[str, Any]:
+    """Read the Auditor's rule mapping, degrading to an explicit unavailable state."""
+    def unavailable(message: str) -> Dict[str, Any]:
+        return {"analysis_status": "unavailable", "message": message, "rules": []}
+
+    if path is None or not path.exists():
+        return unavailable("The Auditor did not produce rule-mapping metadata.")
+    try:
+        value = json.loads(path.read_text())
+    except Exception:
+        return unavailable("The Auditor could not read the rule-mapping metadata.")
+    if not isinstance(value, dict):
+        return unavailable("The Auditor produced invalid rule-mapping metadata.")
+    return value
+
+
+def _applied_at_html(rule: Dict[str, Any]) -> str:
+    places: List[str] = []
+    for attachment in rule.get("applied_at") or []:
+        if not isinstance(attachment, dict):
+            continue
+        text = " ".join(
+            part
+            for part in (
+                str(attachment.get("interface") or "").strip(),
+                str(attachment.get("direction") or "").strip(),
+            )
+            if part
+        )
+        if text:
+            places.append(text)
+    return "<br>".join(f"<code>{_html_escape(place)}</code>" for place in places)
+
+
+def _render_out_of_spec_rules(rule_mapping: Dict[str, Any]) -> str:
+    """Table of permit rules no policy justifies, whole or in part.
+
+    A rule appears either because nothing justified it at all, or because it was
+    justified for some destination ports but opens others besides. Both are folded
+    into one row so an operator reads a single list of findings.
+    """
+    heading = "<h4>Out-of-Spec Rules</h4>"
+    if str(rule_mapping.get("analysis_status") or "").lower() != "complete":
+        detail = str(rule_mapping.get("message") or "").strip()
+        return (
+            heading
+            + "<p class='warning'><b>Analysis unavailable.</b> The absence of rows "
+            "must not be interpreted as no out-of-spec rules."
+            + (f" Details: {_html_escape(detail)}" if detail else "")
+            + "</p>"
+        )
+
+    rules = rule_mapping.get("rules")
+    findings: List[Tuple[Dict[str, Any], List[str]]] = []
+    for rule in rules if isinstance(rules, list) else []:
+        if not isinstance(rule, dict) or str(rule.get("action") or "").upper() != "PERMIT":
+            continue
+        status = str(rule.get("status") or "").upper()
+        ports = [
+            f"{port.get('protocol')}/{port.get('port')}"
+            for port in rule.get("ports_out_of_spec") or []
+            if isinstance(port, dict)
+        ]
+        if status == "OUT_OF_SPEC":
+            findings.append((rule, []))
+        elif ports:
+            findings.append((rule, sorted(ports)))
+
+    explanation = (
+        "<p>These active, effective permit rules were not fully justified by a "
+        "<code>VALID</code> or <code>CONJECTURED-SAT</code> policy leaf. Because a "
+        "specification may be partial, each rule requires operator review and is not "
+        "automatically incorrect.</p>"
+    )
+    if not findings:
+        return (
+            heading
+            + explanation
+            + "<p>Every active, effective permit rule was justified by a qualifying "
+            "policy, on every port it opens.</p>"
+        )
+
+    rows: List[str] = []
+    for rule, ports in sorted(
+        findings,
+        key=lambda item: (str(item[0].get("filter") or ""), int(item[0].get("line_index") or 0)),
+    ):
+        source_line = rule.get("source_line")
+        line_label = (
+            str(source_line)
+            if isinstance(source_line, int)
+            else f"ACL line {int(rule.get('line_index') or 0) + 1}"
+        )
+        scope = (
+            "<br>".join(f"<code>{_html_escape(port)}</code>" for port in ports)
+            if ports
+            else "<i>whole rule</i>"
+        )
+        rows.append(
+            "<tr>"
+            f"<td><code>{_html_escape(str(rule.get('filter') or ''))}</code></td>"
+            f"<td>{_html_escape(line_label)}</td>"
+            f"<td>{_applied_at_html(rule)}</td>"
+            f"<td><code>{_html_escape(str(rule.get('line') or ''))}</code></td>"
+            f"<td>{scope}</td>"
+            "</tr>"
+        )
+    return (
+        heading
+        + explanation
+        + "<table><thead><tr><th>ACL</th><th>Line</th><th>Applied at</th>"
+        "<th>Rule</th><th>Unjustified</th></tr></thead>"
+        f"<tbody>{''.join(rows)}</tbody></table>"
+    )
+
+
 def _render_html_tree(
     title: str,
     root_name: str,
@@ -591,6 +707,7 @@ def _render_html_tree(
     entity_root_effective_state: Optional[Dict[str, str]] = None,
     entity_leaf_local_state: Optional[Dict[str, Dict[str, str]]] = None,
     bdd_conjectures: Optional[Dict[str, Dict[str, List[str]]]] = None,
+    rule_mapping: Optional[Dict[str, Any]] = None,
 ) -> str:
     def node_class(kind: str) -> str:
         return {
@@ -684,6 +801,7 @@ def _render_html_tree(
     .valid { color: #0a7d00; }
     .conjectured { color: #0a7d00; }
     .unsat { color: #b00020; }
+    .warning { color: #b00020; }
     summary { cursor: pointer; }
     """
     root_word = root_eval.effective_state or ""
@@ -734,6 +852,7 @@ def _render_html_tree(
         )
         + "</ul>"
         + bdd_html
+        + _render_out_of_spec_rules(rule_mapping or {})
         + "</body></html>"
     )
     return html
@@ -831,6 +950,11 @@ def main() -> int:
         default="",
         help="Optional conjecture detail file generated by run_audit.py",
     )
+    ap.add_argument(
+        "--rule_mapping",
+        default="",
+        help="Optional rule mapping JSON generated by run_audit.py",
+    )
     args = ap.parse_args()
 
     fsl_path = Path(args.fsl)
@@ -864,6 +988,14 @@ def main() -> int:
             bdd_conjectures,
         ) = _load_entity_leaf_states_from_conjectures_detail(detail_path)
 
+    rule_mapping_path = (
+        Path(str(args.rule_mapping).strip()) if str(args.rule_mapping or "").strip() else None
+    )
+    if rule_mapping_path is None:
+        stem = re.sub(r"\.summary\.txt$", "", summary_path.name)
+        guess = summary_path.parent / f"{stem}.rule_mapping.json"
+        rule_mapping_path = guess if guess.exists() else None
+
     title = args.title.strip() or f"{summary_path.name} vs {fsl_path.name}"
     html = _render_html_tree(
         title=title,
@@ -874,6 +1006,7 @@ def main() -> int:
         entity_root_effective_state=entity_root_effective_state,
         entity_leaf_local_state=entity_leaf_local_state,
         bdd_conjectures=bdd_conjectures,
+        rule_mapping=_load_rule_mapping(rule_mapping_path),
     )
     Path(args.out_html).write_text(html)
 
