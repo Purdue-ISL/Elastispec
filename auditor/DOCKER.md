@@ -25,9 +25,10 @@ Run all commands from the repository root.
 
 ## Mode 1: Docker Compose
 
-The Docker runner pulls both images when needed, starts both containers, mounts
-the three inputs read-only, writes the compliance report to the host, and
-removes the stopped containers and temporary Batfish volume after the run.
+The Docker runner checks Docker Hub for the current images before each run,
+starts both containers, mounts the three inputs read-only, writes the compliance
+report to the host, and removes the stopped containers and temporary Batfish
+volume after the run.
 
 ### Linux
 

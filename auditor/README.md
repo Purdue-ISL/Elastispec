@@ -156,6 +156,13 @@ for unresolved source roles. Validate those ranges against the intended campus
 or security zone. An `UNSAT` leaf in an `OR` or optional branch does not always
 make the root `UNSAT`; inspect the full tree.
 
+In addition to checking whether documented traffic is permitted, the Auditor
+reports what else the firewall permits in the `Out-of-Spec Rules` table. The
+table may identify an entire active, effective permit rule or only extra
+destination ports within a rule. Because an Elastispec specification may be
+partial, each finding requires operator review and is not automatically
+incorrect.
+
 See the [PaperCut tutorial](TUTORIAL.md) for a concrete report walkthrough.
 
 ## Python Source Mode

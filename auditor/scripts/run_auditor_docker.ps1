@@ -62,7 +62,7 @@ try {
         throw "Docker Compose is unavailable. Start Docker Desktop and enable Linux containers."
     }
 
-    & docker compose -f $composeFile pull --policy missing
+    & docker compose -f $composeFile pull --policy always
     if ($LASTEXITCODE -ne 0) {
         throw "Unable to pull the Elastispec Docker images"
     }

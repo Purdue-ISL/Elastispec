@@ -99,7 +99,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-docker compose -f "$compose_file" pull --policy missing
+docker compose -f "$compose_file" pull --policy always
 
 set +e
 ELASTISPEC_AUDITOR_CONFIG="$config" \

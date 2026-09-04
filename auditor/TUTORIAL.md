@@ -48,7 +48,9 @@ The configuration also quarantines client `10.10.20.66` from the server pool.
 
 The included
 [toy_firewall_config_asa.txt](examples/papercut_toy/toy_firewall_config_asa.txt)
-expresses the same policy as a Cisco ASA 9.12(4) configuration.
+expresses the same high-level policy as a Cisco ASA 9.12(4) configuration. It
+also includes TCP `5114` in a service object-group to demonstrate reporting an
+unjustified port within an otherwise justified ACL rule.
 
 ### Inventory
 
@@ -144,6 +146,16 @@ the result is a list of prefixes rather than one `/24`.
 
 An unexpected IP present in the conjecture (e.g., a non-campus IP or an overly
 broad range) warrants review.
+
+### Reviewing Out-of-Spec Rules
+
+The `Out-of-Spec Rules` table shows traffic permitted by the firewall but not
+covered by a green policy leaf. In the IOS toy report, the datacenter zone's
+`permit ip any any` is a whole-rule finding. In the ASA report, TCP `5114`
+appears in the `Unjustified` column because it shares a service object-group
+with documented ports. These findings require operator review and are not
+automatically configuration errors because an Elastispec specification may be
+partial.
 
 ## 4. Run The ASA Variant
 
