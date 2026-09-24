@@ -63,7 +63,7 @@ def main() -> int:
             "and write one compliance report."
         )
     )
-    parser.add_argument("--config", required=True, help="Complete Cisco firewall configuration")
+    parser.add_argument("--config", required=True, help="Complete firewall configuration")
     parser.add_argument(
         "--inventory",
         required=True,

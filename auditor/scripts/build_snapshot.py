@@ -94,7 +94,7 @@ def main() -> None:
   parser.add_argument(
     "--config",
     required=True,
-    help="Complete firewall config with interfaces and ACL bindings.",
+    help="Complete firewall config with interfaces and filter bindings.",
   )
   parser.add_argument(
     "--inventory",

@@ -1338,75 +1338,92 @@ def _reachability_for_group_headers(
     return True, flows
 
 
-def _parse_acl_any_sides(line_content: str) -> Tuple[bool, bool]:
+_ACL_LINES_BY_TEXT: Dict[Tuple[str, str], Dict[str, Dict[str, Any]]] = {}
+# Batfish spells an unconstrained address space either as a universe or as a wildcard
+# covering it. Anything narrower is a real constraint.
+_UNIVERSAL_WILDCARDS = {"0.0.0.0/0", "0.0.0.0:255.255.255.255"}
+
+
+def _acl_lines_by_text(
+    bf: Session, snapshot_name: str, node: str
+) -> Dict[str, Dict[str, Any]]:
+    """Every filter line on a node, keyed by the rule text Batfish reports for it.
+
+    The text is only a join key between two Batfish answers, never parsed for meaning,
+    so this carries no assumption about a vendor's configuration grammar.
     """
-    Best-effort parse of a Batfish ACL line content and detect whether the
-    *source* or *destination* is the wildcard "any".
+    cache_key = (snapshot_name, node)
+    if cache_key not in _ACL_LINES_BY_TEXT:
+        lines: Dict[str, Dict[str, Any]] = {}
+        try:
+            frame = bf.q.namedStructures(
+                nodes=node, structureTypes="IP_ACCESS_LIST", ignoreGenerated=False
+            ).answer(snapshot=snapshot_name).frame()
+            rows = [] if frame is None or frame.empty else frame.to_dict(orient="records")
+        except Exception:  # noqa: BLE001 - absence of structure data degrades to "not any"
+            rows = []
+        for row in rows:
+            definition = row.get("Structure_Definition")
+            if not isinstance(definition, dict):
+                continue
+            for line in definition.get("lines") or []:
+                if not isinstance(line, dict):
+                    continue
+                text = str(line.get("name") or "").strip()
+                if text:
+                    lines.setdefault(text, line)
+        _ACL_LINES_BY_TEXT[cache_key] = lines
+    return _ACL_LINES_BY_TEXT[cache_key]
 
-    We only need a coarse signal to support "case 1" classification:
-      - permit ip X any
-      - permit ip any X
-      - permit tcp X any eq 443
-      - permit tcp any X eq 443
 
-    Returns: (src_is_any, dst_is_any)
+def _ip_space_is_universal(space: Any) -> bool:
+    if not isinstance(space, dict):
+        return False
+    class_name = str(space.get("class") or "")
+    if class_name.endswith("UniverseIpSpace"):
+        return True
+    if class_name.endswith("IpWildcardIpSpace"):
+        return str(space.get("ipWildcard") or "") in _UNIVERSAL_WILDCARDS
+    return False
+
+
+def _match_side_is_any(condition: Any, side: str) -> bool:
+    """Whether a line's match condition leaves one address side unconstrained.
+
+    Read off the condition Batfish built for the line rather than the rule text, so it
+    works for any vendor. Conservative in two ways: a side nothing constrains is not
+    claimed as "any", and where several constraints apply to a side, every one of them
+    must be unconstrained.
     """
-    s = str(line_content or "").strip().lower()
-    toks = [t for t in s.split() if t]
-    if not toks:
-        return False, False
-    if "permit" not in toks:
-        return False, False
-    try:
-        i = toks.index("permit")
-    except ValueError:
-        return False, False
-    # Expect: permit <proto> <srcSpec...> <dstSpec...> ...
-    if i + 2 >= len(toks):
-        return False, False
-    # proto token is toks[i+1], then src starts at i+2
-    j = i + 2
-
-    def is_any(tok: str) -> bool:
-        return tok in ("any", "any4")
-
-    def looks_like_ip(tok: str) -> bool:
-        # very permissive; works for dotted-decimal and CIDR-ish tokens Batfish may emit
-        return bool(re.match(r"^\d{1,3}(\.\d{1,3}){3}(/\d{1,2})?$", tok))
-
-    def consume_endpoint(k: int) -> Tuple[bool, int]:
-        if k >= len(toks):
-            return False, k
-        t = toks[k]
-        if is_any(t):
-            return True, k + 1
-        # Common patterns: host <ip>, object-group <name>, object <name>
-        if t == "host" and k + 1 < len(toks):
-            return False, k + 2
-        if t in ("object-group", "object") and k + 1 < len(toks):
-            return False, k + 2
-        # IP or prefix + optional wildcard/mask token
-        if looks_like_ip(t):
-            k2 = k + 1
-            if k2 < len(toks) and looks_like_ip(toks[k2]):
-                return False, k2 + 1
-            return False, k2
-        # Fallback: consume one token
-        return False, k + 1
-
-    src_any, j2 = consume_endpoint(j)
-    dst_any, _j3 = consume_endpoint(j2)
-    return src_any, dst_any
+    wanted_header = "srcIps" if side == "src" else "dstIps"
+    wanted_match = "MatchSourceIp" if side == "src" else "MatchDestinationIp"
+    spaces: List[Any] = []
+    stack: List[Any] = [condition]
+    while stack:
+        current = stack.pop()
+        if isinstance(current, dict):
+            class_name = str(current.get("class") or "")
+            if class_name.endswith("MatchHeaderSpace"):
+                header_space = current.get("headerSpace")
+                if isinstance(header_space, dict) and wanted_header in header_space:
+                    spaces.append(header_space.get(wanted_header))
+            elif class_name.endswith(wanted_match):
+                spaces.append(current.get("ips"))
+            stack.extend(current.values())
+        elif isinstance(current, list):
+            stack.extend(current)
+    return bool(spaces) and all(_ip_space_is_universal(space) for space in spaces)
 
 
-def _summarize_any_hit(filters: Sequence[Dict[str, Any]], side: str) -> bool:
+def _summarize_any_hit(
+    bf: Session, snapshot_name: str, filters: Sequence[Dict[str, Any]], side: str
+) -> bool:
     """
-    Heuristic: did searchFilters match a permit that uses wildcard "any" on the
-    requested side?
+    Did searchFilters match a permit line that is unconstrained on the requested side?
 
-    - side="src": look for `permit ... any ...`
-    - side="dst": look for `permit ... ... any ...`
-    - side="either": any on either side
+    - side="src": the line admits any source
+    - side="dst": the line admits any destination
+    - side="either": unconstrained on either side
 
     This is useful when suggesting how an unmapped entity could be satisfied.
     """
@@ -1414,10 +1431,16 @@ def _summarize_any_hit(filters: Sequence[Dict[str, Any]], side: str) -> bool:
     for r in filters or []:
         if not isinstance(r, dict):
             continue
-        line = str(r.get("Line_Content") or "").lower()
-        if "permit" not in line:
+        text = str(r.get("Line_Content") or "").strip()
+        node = str(r.get("Node") or "").strip()
+        if not text or not node:
             continue
-        src_any, dst_any = _parse_acl_any_sides(line)
+        line = _acl_lines_by_text(bf, snapshot_name, node).get(text)
+        if not isinstance(line, dict) or str(line.get("action") or "").upper() != "PERMIT":
+            continue
+        condition = line.get("matchCondition")
+        src_any = _match_side_is_any(condition, "src")
+        dst_any = _match_side_is_any(condition, "dst")
         if side == "src" and src_any:
             return True
         if side == "dst" and dst_any:
@@ -1591,7 +1614,7 @@ def _suggest_for_unmapped_dst(
             }
             headers_w = {k: v for k, v in headers_w.items() if v not in (None, "", [])}
             filters = _search_filters_for_headers(bf, headers=headers_w, snapshot_name=snapshot_name)
-            allowed_any = _summarize_any_hit(filters, side="dst")
+            allowed_any = _summarize_any_hit(bf, snapshot_name, filters, side="dst")
             if not allowed_any:
                 # Reachable, but not via a dst-any permit line; don't count toward *_COVERED_BY_ANY.
                 continue
@@ -1878,7 +1901,7 @@ def main() -> None:
     rule_inventory: Optional[Inventory] = None
     rule_mapping_error = ""
     try:
-        rule_inventory = build_inventory(bf, args.snapshot, fw_node, snapshot_dir)
+        rule_inventory = build_inventory(bf, args.snapshot, fw_node)
     except RuleMappingUnavailable as exc:
         rule_mapping_error = str(exc)
     except Exception as exc:  # noqa: BLE001 - rule mapping must never fail the audit

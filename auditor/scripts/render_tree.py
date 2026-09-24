@@ -616,6 +616,26 @@ def _applied_at_html(rule: Dict[str, Any]) -> str:
     return "<br>".join(f"<code>{_html_escape(place)}</code>" for place in places)
 
 
+def _line_label(rule: Dict[str, Any]) -> str:
+    """Where to find the rule in the configuration, as precisely as Batfish allows.
+
+    Some vendor parsers record a line number for every rule; others describe only the
+    filter as a whole, leaving the rule's position within it and the lines the filter
+    occupies.
+    """
+    source_line = rule.get("source_line")
+    if isinstance(source_line, int):
+        return str(source_line)
+
+    position = f"filter line {int(rule.get('line_index') or 0) + 1}"
+    span = rule.get("filter_source_lines")
+    if isinstance(span, list) and len(span) == 2 and all(isinstance(end, int) for end in span):
+        start, end = span
+        where = f"config line {start}" if start == end else f"config lines {start}-{end}"
+        return f"{position} ({where})"
+    return position
+
+
 def _render_out_of_spec_rules(rule_mapping: Dict[str, Any]) -> str:
     """Table of permit rules no policy justifies, whole or in part.
 
@@ -669,12 +689,7 @@ def _render_out_of_spec_rules(rule_mapping: Dict[str, Any]) -> str:
         findings,
         key=lambda item: (str(item[0].get("filter") or ""), int(item[0].get("line_index") or 0)),
     ):
-        source_line = rule.get("source_line")
-        line_label = (
-            str(source_line)
-            if isinstance(source_line, int)
-            else f"ACL line {int(rule.get('line_index') or 0) + 1}"
-        )
+        line_label = _line_label(rule)
         scope = (
             "<br>".join(f"<code>{_html_escape(port)}</code>" for port in ports)
             if ports
@@ -692,7 +707,7 @@ def _render_out_of_spec_rules(rule_mapping: Dict[str, Any]) -> str:
     return (
         heading
         + explanation
-        + "<table><thead><tr><th>ACL</th><th>Line</th><th>Applied at</th>"
+        + "<table><thead><tr><th>Filter</th><th>Line</th><th>Applied at</th>"
         "<th>Rule</th><th>Unjustified</th></tr></thead>"
         f"<tbody>{''.join(rows)}</tbody></table>"
     )
