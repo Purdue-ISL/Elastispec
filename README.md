@@ -71,6 +71,6 @@ parameters, API keys, and usage considerations.
 Only vendor documentation is sent to an LLM provider; all other inputs,
 including firewall configurations, remain local.
 
-Please contact `qing0@purdue.edu` for any questions.
+Please contact `wen163@purdue.edu` or `qing0@purdue.edu` for any questions.
 
 This artifact is released under the MIT License. See [`LICENSE`](LICENSE).
