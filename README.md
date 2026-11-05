@@ -11,6 +11,10 @@ the documented application requirements.
 
 This is based on a paper published at ACM SIGCOMM 2026.
 
+**[Open the interactive walkthrough](https://purdue-isl.github.io/Elastispec/)**
+to click through one audit of a PaperCut instance, from vendor documents to the
+compliance tree. It needs no installation.
+
 ## Citation
 
 If you use this code, please cite:
